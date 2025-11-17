@@ -122,8 +122,8 @@ class Rutherford:
         lightspeed = 3e10 # cm / s
         fine_structure = 1 / 137 # dimensionless
 
-        energy_cm = energy * (1 - proj.A / (targ.A + proj.A))
-        e_power_2 = fine_structure * reduced_planck * lightspeed
+        energy_cm = energy * (1 - proj.A / (targ.A + proj.A)) # MeV
+        e_power_2 = fine_structure * reduced_planck * lightspeed # MeV * cm
         numerator = proj.Z * targ.Z * e_power_2 # MeV * cm
         denumerator = 4 * energy_cm * numpy.sin(angle_range / 2) ** 2 # MeV * rad
 
