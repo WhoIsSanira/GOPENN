@@ -67,6 +67,9 @@ class Nuclei:
     
     @property
     def name(self) -> str:
+        if self.Z == 1:
+            return ["p", "d", "t"][self.A - 1]
+        
         return f"{self.__A}{CHARGE2NAME[self.__Z]}"
     
     @property
