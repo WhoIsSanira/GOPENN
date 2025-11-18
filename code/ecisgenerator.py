@@ -51,12 +51,12 @@ class EcisGenerator:
 
     def write_information(self, beam: Nuclei, target: Nuclei, energy: float) -> str:
         incomes = [
-            0.0,              # target spin
-            energy,           # energy in lab
-            0.0,              # projectile spin
-            beam.A,           # projectile mass
-            target.A,         # target mass
-            beam.Z * target.Z # product of charges
+            0.0,                     # target spin
+            energy,                  # energy in lab
+            0.0,                     # projectile spin
+            float(beam.A),           # projectile mass
+            float(target.A),         # target mass
+            float(beam.Z * target.Z) # product of charges
         ]
 
         info = ""
@@ -152,7 +152,7 @@ class EcisGenerator:
 
 
 if __name__ == '__main__':
-    gen = EcisGenerator(".\\ecis")
+    gen = EcisGenerator(".\\ecis\\in")
 
     direct = ".\\xsections"
     projs = os.listdir(direct)
