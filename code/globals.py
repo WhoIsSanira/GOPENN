@@ -774,4 +774,5 @@ class XuBeryllium9:
 
 
 if __name__ == '__main__':
-    pass
+    alph = SuAlpha(16, 8, 22.5)
+    alph()
