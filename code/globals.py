@@ -660,8 +660,8 @@ class SuLithium8:
         return V0 + V1 * self.energy
     
     def imag_volume_depth(self) -> float:
-        U0, U1, U2 = self.params['U0'], self.params['U1'], self.params['U2']
-        return U0 + U1 * self.energy + U2 * math.pow(self.energy, 2)
+        U0, U1 = self.params['U0'], self.params['U1'] #The U2 parameter was not in the original article
+        return U0 + U1 * self.energy
 
     def imag_surface_depth(self) -> float:
         W0, W1 = self.params['W0'], self.params['W1']
@@ -774,5 +774,5 @@ class XuBeryllium9:
 
 
 if __name__ == '__main__':
-    alph = SuAlpha(16, 8, 22.5)
-    alph()
+    lith = SuLithium8(7, 3, 11.0)
+    lith()
