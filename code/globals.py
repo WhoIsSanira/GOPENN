@@ -98,7 +98,7 @@ class VarnerProton:
         av = self.real_diffuseness()
         Wr = self.imag_volume_depth()
         Wd = self.imag_surface_depth()
-        rw = self.imag_radius()
+        rw = self.imag_volume_radius()
         aw = self.imag_diffuseness()
         rc = self.coulomb_radius()
 
@@ -123,7 +123,10 @@ class VarnerProton:
     def real_radius(self) -> float:
         return self.__radius(self.params['r0'], self.params['r00'])
 
-    def imag_radius(self) -> float:
+    def imag_volume_radius(self) -> float:
+        return self.__radius(self.params['rw'], self.params['rw0'])
+    
+    def imag_surface_radius(self) -> float:
         return self.__radius(self.params['rw'], self.params['rw0'])
     
     def coulomb_radius(self) -> float:
@@ -201,7 +204,10 @@ class ZhangDeuteron:
     def real_radius(self) -> float:
         return self.__radius(self.params['rr'], self.params['rr0'], self.params['rre'])
 
-    def imag_radius(self) -> float:
+    def imag_volume_radius(self) -> float:
+        return self.__radius(self.params['rw'], self.params['rw0'], self.params['rwe'])
+    
+    def imag_surface_radius(self) -> float:
         return self.__radius(self.params['rw'], self.params['rw0'], self.params['rwe'])
 
     def coulomb_radius(self) -> float:
@@ -211,7 +217,10 @@ class ZhangDeuteron:
     def real_diffuseness(self) -> float:
         return self.params['ar']
 
-    def imag_diffuseness(self) -> float:
+    def imag_volume_diffuseness(self) -> float:
+        return self.params['aw']
+    
+    def imag_surface_diffuseness(self) -> float:
         return self.params['aw']
 
     def __radius(self, ri: float, ri0: float, rie: float) -> float:
@@ -273,7 +282,11 @@ class DaehnickDeuteron:
         rr = self.params['rr']
         return rr * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(DEUTERON_NUCLONS, 1/3))
 
-    def imag_radius(self) -> float:
+    def imag_volume_radius(self) -> float:
+        rw = self.params['rw']
+        return rw * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(DEUTERON_NUCLONS, 1/3))
+    
+    def imag_surface_radius(self) -> float:
         rw = self.params['rw']
         return rw * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(DEUTERON_NUCLONS, 1/3))
 
@@ -284,7 +297,11 @@ class DaehnickDeuteron:
     def real_diffuseness(self) -> float:
         return self.params['ar']
 
-    def imag_diffuseness(self) -> float:
+    def imag_volume_diffuseness(self) -> float:
+        aw0, awt, aws = self.params['aw0'], self.params['awt'], self.params['aws']
+        return aw0 + awt * math.pow(self.at, 1/3) + aws * sum([math.exp(-math.pow((m + self.zt - self.at) / 2, 2)) for m in self.magics])
+    
+    def imag_surface_diffuseness(self) -> float:
         aw0, awt, aws = self.params['aw0'], self.params['awt'], self.params['aws']
         return aw0 + awt * math.pow(self.at, 1/3) + aws * sum([math.exp(-math.pow((m + self.zt - self.at) / 2, 2)) for m in self.magics])
 
@@ -354,7 +371,10 @@ class PangHelium3:
     def real_radius(self) -> float:
         return self.__radius(self.params['r0'], self.params['r00'])
 
-    def imag_radius(self) -> float:
+    def imag_volume_radius(self) -> float:
+        return self.__radius(self.params['rw'], self.params['rw0'])
+    
+    def imag_surface_radius(self) -> float:
         return self.__radius(self.params['rw'], self.params['rw0'])
 
     def coulomb_radius(self) -> float:
@@ -363,7 +383,10 @@ class PangHelium3:
     def real_diffuseness(self) -> float:
         return self.params['a0']
 
-    def imag_diffuseness(self) -> float:
+    def imag_volume_diffuseness(self) -> float:
+        return self.params['aw']
+    
+    def imag_surface_diffuseness(self) -> float:
         return self.params['aw']
 
     def __radius(self, ri: float, ri0: float) -> float:
