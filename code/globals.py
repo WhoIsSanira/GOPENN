@@ -1,67 +1,222 @@
 import math
+from nuclei import Nuclei
 
 
-PROTON_NUCLONS = 1
-PROTON_CHARGE = 1
+class GlobalPotential:
+    def __init__(self, proj: Nuclei, target: Nuclei, energy: float) -> None:
+        self._proj = proj
+        self._targ = target
+        self._energy = energy
 
-DEUTERON_NUCLONS = 2
-DEUTERON_CHARGE  = 1
+    @property
+    def projectile(self) -> str:
+        return self._proj.name
+    
+    @property
+    def target(self) -> str:
+        return self._targ.name
+    
+    @property
+    def energy(self) -> float:
+        return self._energy
+    
+    def real_volume_depth(self) -> float:
+        '''
+        Real Volume Depth
+        
+        :return: `Vr`, MeV
+        :rtype: float
+        '''
+        return 0.0
+    
+    def imag_volume_depth(self) -> float:
+        '''
+        Imag Volume Depth
+        
+        :return: `Wr`, MeV
+        :rtype: float
+        '''
+        return 0.0
+    
+    def imag_surface_depth(self) -> float:
+        '''
+        Imag Surface Depth
+    
+        :return: `Wd`, MeV
+        :rtype: float
+        '''
+        return 0.0
+    
+    def real_so_depth(self) -> float:
+        '''
+        Real SO Depth
+        
+        :return: `Vso`, MeV
+        :rtype: float
+        '''
+        return 0.0
+    
+    def imag_so_depth(self) -> float:
+        '''
+        Imag SO Depth
+        
+        :return: `Wso`, MeV
+        :rtype: float
+        '''
+        return 0.0
+    
+    def real_volume_radius(self) -> float:
+        '''
+        Real Volume Radius
+        
+        :return: `rv`, fm
+        :rtype: float
+        '''
+        return 0.0
+    
+    def imag_volume_radius(self) -> float:
+        '''
+        Imag Volume Radius
+        
+        :return: `rw`, fm
+        :rtype: float
+        '''
+        return 0.0
+    
+    def imag_surface_radius(self) -> float:
+        '''
+        Imag Surface Radius
+        
+        :return: `rd`, fm
+        :rtype: float
+        '''
+        return 0.0
+    
+    def real_so_radius(self) -> float:
+        '''
+        Real SO Radius
+        
+        :return: `rvso`, fm
+        :rtype: float
+        '''
+        return 0.0
+    
+    def imag_so_radius(self) -> float:
+        '''
+        Imag SO Radius
+        
+        :return: `rwso`, fm
+        :rtype: float
+        '''
+        return 0.0
+    
+    def coulomb_radius(self) -> float:
+        '''
+        Coulomb Radius
+        
+        :return: `rc`, fm
+        :rtype: float
+        '''
+        return 0.0
+    
+    def real_volume_diffuseness(self) -> float:
+        '''
+        Real Volume Diffuseness
+        
+        :return: `av`, fm
+        :rtype: float
+        '''
+        return 0.0
+    
+    def imag_volume_diffuseness(self) -> float:
+        '''
+        Imag Volume Diffuseness
+        
+        :return: `aw`, fm
+        :rtype: float
+        '''
+        return 0.0
+    
+    def imag_surface_diffuseness(self) -> float:
+        '''
+        Imag Surface Diffuseness
+        
+        :return: `ad`, fm
+        :rtype: float
+        '''
+        return 0.0
+    
+    def real_so_diffuseness(self) -> float:
+        '''
+        Real SO Diffuseness
+        
+        :return: `avso`, MeV
+        :rtype: float
+        '''
+        return 0.0
+    
+    def imag_so_diffuseness(self) -> float:
+        '''
+        Imag SO Diffuseness
+        
+        :return: `awso`, fm
+        :rtype: float
+        '''
+        return 0.0
+    
+    def __call__(self) -> str:
+        step = 13
+        title = 'Global Optical Model Potential for ' + self.projectile
 
-HELIUM3_NUCLONS = 3
-HELIUM3_CHARGE = 2
+        Vr, rv, av = self.real_volume_depth(), self.real_volume_radius(), self.real_volume_diffuseness()
+        Wv, rw, aw = self.imag_volume_depth(), self.imag_volume_radius(), self.imag_volume_diffuseness()
+        Wd, rd, ad = self.imag_surface_depth(), self.imag_surface_radius(), self.imag_surface_diffuseness()
+        Vso, rvso, avso = self.real_so_depth(), self.real_so_radius(), self.real_so_diffuseness()
+        Wso, rwso, awso = self.imag_so_depth(), self.imag_so_radius(), self.imag_so_diffuseness()
+        rc = self.coulomb_radius()
 
-ALPHA_NUCLONS = 4
-ALPHA_CHARGE = 2
+        labels = [
+            'V real',   'r real'   ,   'a real',
+            'W volu', 'r imag volu', 'a imag volu',
+            'W surf', 'r imag surf', 'a imag surf',
+             'V SO' ,  'r real SO' ,  'a real SO',
+             'W SO' ,  'r imag SO' ,  'a imag SO',
+            'r coul'
+        ]
 
-LITHIUM6_NUCLONS = 6
-LITHIUM6_CHARGE = 3
+        params = [
+             Vr,  rv ,  av ,
+             Wv,  rw ,  aw ,
+             Wd,  rd ,  ad ,
+            Vso, rvso, avso,
+            Wso, rwso, awso,
+             rc,
+        ]
 
-LITHIUM7_NUCLONS = 7
-LITHIUM7_CHARGE = 3
+        sealed = [i for i in range(len(params)) if params[i] != 0.0]
 
-LITHIUM8_NUCLONS = 8
-LITHIUM8_CHARGE = 3
+        table = '—' * (step * len(sealed)) + '\n'
+        table += '|' + title.center(step * len(sealed) - 1) + '|\n'
+        table += '—' * (step * len(sealed)) + '\n'
 
-BERYLLIUM9_NUCLONS = 9
-BERYLLIUM9_CHARGE = 4
+        table += '|'
+        for i in sealed:
+            table += labels[i].center(step - 1) + '|'
 
+        table += '\n'
+        table += '—' * (step * len(sealed))
+        table += '\n'
 
-class Printer:
-    def __init__(self):
-        pass
+        table += '|'
+        for i in sealed:
+            table += f'{round(params[i], 3)}'.center(step - 1) + '|'
 
-    def show(self, params: list[float], labels: list[str], title: str = 'Global Optical Pontial Parameters', step: int = 16) -> None:
-        if len(params) != len(labels):
-            print('No. of parameters and No. of labels must match!')
-            return
-
-        parameters = '—' * (step * len(params)) + '\n'
-        parameters += '|' + title.center(step * len(params) - 1) + '|\n'
-        parameters += '—' * (step * len(params)) + '\n'
-
-        parameters += '|'
-
-        for i in range(len(labels)):
-            parameters += labels[i].center(step - 1) + '|'
-
-        parameters += '\n'
-        parameters += '—' * (step * len(params))
-        parameters += '\n'
-
-        parameters += '|'
-
-        for i in range(len(params)):
-            parameters += f'{round(params[i], 3)}'.center(step - 1) + '|'
-
-        print(parameters)
+        return table
 
 
-class VarnerProton:
-    def __init__(self, target_nuclons: int, target_charge: int, energy: float) -> None:
-        self.at = target_nuclons
-        self.zt = target_charge
-        self.energy = energy
-
+class VarnerProton(GlobalPotential):
+    def __init__(self, nuclons: int, charge: int, energy: float) -> None:
+        super().__init__(Nuclei(1, 1), Nuclei(charge, nuclons), energy)
         self.params = {
             'V0'  :  52.90, # MeV
             'Vt'  :  13.10, # MeV
@@ -90,27 +245,11 @@ class VarnerProton:
     @property
     def coulomb_correction(self) -> float:
         e2 = 1.44 # MeV * fm
-        return (6 * self.zt * PROTON_CHARGE * e2) / (5 * self.coulomb_radius() * (math.pow(self.at, 1/3) + math.pow(PROTON_NUCLONS, 1/3))) # MeV
+        return (6 * self._targ.Z * self._proj.Z * e2) / (5 * self.coulomb_radius() * (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))) # MeV
     
-    def __call__(self) -> None:
-        Vr = self.real_volume_depth()
-        rv = self.real_radius()
-        av = self.real_diffuseness()
-        Wr = self.imag_volume_depth()
-        Wd = self.imag_surface_depth()
-        rw = self.imag_volume_radius()
-        aw = self.imag_diffuseness()
-        rc = self.coulomb_radius()
-
-        params = [   Vr,       rv,       av,       Wr,       Wd,       rw,       aw,       rc   ]
-        labels = ['V real', 'r real', 'a real', 'W volu', 'W surf', 'r imag', 'a imag', 'r coul']
-
-        printer = Printer()
-        printer.show(params, labels, title='Global Optical Model paramaters for p')
-
     def real_volume_depth(self) -> float:
         V0, Vt, Ve = self.params['V0'], self.params['Vt'], self.params['Ve']
-        return V0 + Vt * (self.at - 2 * self.zt) / self.at + Ve * (self.energy - self.coulomb_correction)
+        return V0 + Vt * (self._targ.A - 2 * self._targ.Z) / self._targ.A + Ve * (self.energy - self.coulomb_correction)
     
     def imag_volume_depth(self) -> float:
         Wv0, Wve0, Wvew = self.params['Wv0'], self.params['Wve0'], self.params['Wvew']
@@ -118,9 +257,9 @@ class VarnerProton:
 
     def imag_surface_depth(self) -> float:
         Ws0, Wst, Wse0, Wsew = self.params['Ws0'], self.params['Wst'], self.params['Wse0'], self.params['Wsew']
-        return (Ws0 + Wst * (self.at - 2 * self.zt) / self.at) * math.pow(1 + math.exp(((self.energy - self.coulomb_correction) - Wse0) / Wsew), -1)
+        return (Ws0 + Wst * (self._targ.A - 2 * self._targ.Z) / self._targ.A) * math.pow(1 + math.exp(((self.energy - self.coulomb_correction) - Wse0) / Wsew), -1)
 
-    def real_radius(self) -> float:
+    def real_volume_radius(self) -> float:
         return self.__radius(self.params['r0'], self.params['r00'])
 
     def imag_volume_radius(self) -> float:
@@ -132,22 +271,22 @@ class VarnerProton:
     def coulomb_radius(self) -> float:
         return self.__radius(self.params['rc'], self.params['rc0'])
 
-    def real_diffuseness(self) -> float:
+    def real_volume_diffuseness(self) -> float:
         return self.params['a0']
 
-    def imag_diffuseness(self) -> float:
+    def imag_volume_diffuseness(self) -> float:
+        return self.params['aw']
+    
+    def imag_surface_diffuseness(self) -> float:
         return self.params['aw']
 
     def __radius(self, ri: float, ri0: float) -> float:
-        return (ri * math.pow(self.at, 1/3) + ri0) / (math.pow(self.at, 1/3) + math.pow(PROTON_NUCLONS, 1/3))
+        return (ri * math.pow(self._targ.A, 1/3) + ri0) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
     
 
-class ZhangDeuteron:
-    def __init__(self, at: int, zt: int, energy: float) -> None:
-        self.at = at # Nuclons of Target
-        self.zt = zt # Charge of Target
-        self.energy = energy # Proj. energy
-
+class ZhangDeuteron(GlobalPotential):
+    def __init__(self, charge: int, nuclons: int, energy: float) -> None:
+        super().__init__(Nuclei(1, 2), Nuclei(charge, nuclons), energy)
         self.params = {
             'Vr'  :  98.90, # MeV
             'Ve'  : -0.279, # MeV
@@ -171,23 +310,7 @@ class ZhangDeuteron:
     @property
     def coulomb_correction(self) -> float:
         e2 = 1.44 # MeV * fm
-        return (6 * self.zt * DEUTERON_CHARGE * e2) / (5 * self.params['rc'] * math.pow(self.at, 1/3)) # MeV
-    
-    def __call__(self) -> None:
-        Vr = self.real_volume_depth()
-        Wr = self.imag_volume_depth()
-        Wd = self.imag_surface_depth()
-        rv = self.real_radius()
-        rw = self.imag_radius()
-        rc = self.coulomb_radius()
-        av = 0.776
-        aw = 0.744
-
-        params = [   Vr,       rv,       av,       Wr,       Wd,       rw,       aw,       rc   ]
-        labels = ['V real', 'r real', 'a real', 'W volu', 'W surf', 'r imag', 'a imag', 'r coul']
-
-        printer = Printer()
-        printer.show(params, labels, title='Global Optical Model paramaters for d')
+        return (6 * self._targ.Z * self._proj.Z * e2) / (5 * self.params['rc'] * math.pow(self._targ.A, 1/3)) # MeV
 
     def real_volume_depth(self) -> float:
         Vr, Ve = self.params['Vr'], self.params['Ve']
@@ -201,7 +324,7 @@ class ZhangDeuteron:
         Ws0, Wse0, Wsew = self.params['Ws0'], self.params['Wse0'], self.params['Wsew']
         return Ws0 / (1 + math.exp(((self.energy - self.coulomb_correction) - Wse0) / Wsew)) # MeV
     
-    def real_radius(self) -> float:
+    def real_volume_radius(self) -> float:
         return self.__radius(self.params['rr'], self.params['rr0'], self.params['rre'])
 
     def imag_volume_radius(self) -> float:
@@ -212,9 +335,9 @@ class ZhangDeuteron:
 
     def coulomb_radius(self) -> float:
         rc = self.params['rc']
-        return rc * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(self.zt, 1/3))
+        return rc * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
 
-    def real_diffuseness(self) -> float:
+    def real_volume_diffuseness(self) -> float:
         return self.params['ar']
 
     def imag_volume_diffuseness(self) -> float:
@@ -224,15 +347,12 @@ class ZhangDeuteron:
         return self.params['aw']
 
     def __radius(self, ri: float, ri0: float, rie: float) -> float:
-        return (ri * math.pow(self.at, 1/3) + ri0 + rie * (self.energy - self.coulomb_correction)) / (math.pow(self.at, 1/3) + math.pow(DEUTERON_NUCLONS, 1/3))
+        return (ri * math.pow(self._targ.A, 1/3) + ri0 + rie * (self.energy - self.coulomb_correction)) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
     
 
-class DaehnickDeuteron:
-    def __init__(self, target_nuclons: int, target_charge: int, energy: float) -> None:
-        self.at = target_nuclons
-        self.zt = target_charge
-        self.energy = energy
-        
+class DaehnickDeuteron(GlobalPotential):
+    def __init__(self, nuclons: int, charge: int, energy: float) -> None:
+        super().__init__(Nuclei(1, 2), Nuclei(charge, nuclons), energy)
         self.magics = [8, 20, 28, 50, 82, 126]
         self.params = {
             'V0' :  86.00,
@@ -250,25 +370,9 @@ class DaehnickDeuteron:
             'rc' :  1.300,
         }
 
-    def __call__(self) -> None:
-        Vr = self.real_volume_depth()
-        rv = self.real_radius()
-        av = self.real_diffuseness()
-        Wr = self.imag_volume_depth()
-        Wd = self.imag_surface_depth()
-        rw = self.imag_radius()
-        aw = self.imag_diffuseness()
-        rc = self.coulomb_radius()
-        
-        params = [   Vr,       rv,       av,       Wr,       Wd,       rw,       aw,       rc   ]
-        labels = ['V real', 'r real', 'a real', 'W volu', 'W surf', 'r imag', 'a imag', 'r coul']
-
-        printer = Printer()
-        printer.show(params, labels, title='Global Optical Model paramaters for d')
-
     def real_volume_depth(self) -> float:
         V0, Ve, Vt = self.params['V0'], self.params['Ve'], self.params['Vt']
-        return V0 + Ve * self.energy + Vt * self.zt * math.pow(self.at, -1/3)
+        return V0 + Ve * self.energy + Vt * self._targ.Z * math.pow(self._targ.A, -1/3)
     
     def imag_volume_depth(self) -> float:
         Wv0 = self.params['Wv0']
@@ -278,43 +382,40 @@ class DaehnickDeuteron:
         Ws0 = self.params['Ws0']
         return Ws0 * math.exp(self.__alpha())
 
-    def real_radius(self) -> float:
+    def real_volume_radius(self) -> float:
         rr = self.params['rr']
-        return rr * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(DEUTERON_NUCLONS, 1/3))
+        return rr * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
 
     def imag_volume_radius(self) -> float:
         rw = self.params['rw']
-        return rw * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(DEUTERON_NUCLONS, 1/3))
+        return rw * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
     
     def imag_surface_radius(self) -> float:
         rw = self.params['rw']
-        return rw * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(DEUTERON_NUCLONS, 1/3))
+        return rw * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
 
     def coulomb_radius(self) -> float:
         rc = self.params['rc']
-        return rc * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(DEUTERON_NUCLONS, 1/3))
+        return rc * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
 
-    def real_diffuseness(self) -> float:
+    def real_volume_diffuseness(self) -> float:
         return self.params['ar']
 
     def imag_volume_diffuseness(self) -> float:
         aw0, awt, aws = self.params['aw0'], self.params['awt'], self.params['aws']
-        return aw0 + awt * math.pow(self.at, 1/3) + aws * sum([math.exp(-math.pow((m + self.zt - self.at) / 2, 2)) for m in self.magics])
+        return aw0 + awt * math.pow(self._targ.A, 1/3) + aws * sum([math.exp(-math.pow((m + self._targ.Z - self._targ.A) / 2, 2)) for m in self.magics])
     
     def imag_surface_diffuseness(self) -> float:
         aw0, awt, aws = self.params['aw0'], self.params['awt'], self.params['aws']
-        return aw0 + awt * math.pow(self.at, 1/3) + aws * sum([math.exp(-math.pow((m + self.zt - self.at) / 2, 2)) for m in self.magics])
+        return aw0 + awt * math.pow(self._targ.A, 1/3) + aws * sum([math.exp(-math.pow((m + self._targ.Z - self._targ.A) / 2, 2)) for m in self.magics])
 
     def __alpha(self) -> float:
         return -math.pow(self.energy / self.params['E0'], 2)
     
 
-class PangHelium3:
-    def __init__(self, target_nuclons: int, target_charge: int, energy: float) -> None:
-        self.at = target_nuclons
-        self.zt = target_charge
-        self.energy = energy
-
+class PangHelium3(GlobalPotential):
+    def __init__(self, nuclons: int, charge: int, energy: float) -> None:
+        super().__init__(Nuclei(2, 3), Nuclei(charge, nuclons), energy)
         self.params = {
             'V0'  :  118.3, # MeV
             'Ve'  : -0.130, # MeV
@@ -338,23 +439,7 @@ class PangHelium3:
     @property
     def coulomb_correction(self) -> float:
         e2 = 1.44 # MeV * fm
-        return (6 * self.zt * HELIUM3_CHARGE * e2) / (5 * self.coulomb_radius() * (math.pow(self.at, 1/3) + math.pow(HELIUM3_NUCLONS, 1/3))) # MeV
-    
-    def __call__(self) -> None:
-        Vr = self.real_volume_depth()
-        rv = self.real_radius()
-        av = self.real_diffuseness()
-        Wr = self.imag_volume_depth()
-        Wd = self.imag_surface_depth()
-        rw = self.imag_radius()
-        aw = self.imag_diffuseness()
-        rc = self.coulomb_radius()
-        
-        params = [   Vr,       rv,       av,       Wr,       Wd,       rw,       aw,       rc   ]
-        labels = ['V real', 'r real', 'a real', 'W volu', 'W surf', 'r imag', 'a imag', 'r coul']
-
-        printer = Printer()
-        printer.show(params, labels, title='Global Optical Model paramaters for 3He')
+        return (6 * self._targ.Z * self._proj.Z * e2) / (5 * self.coulomb_radius() * (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))) # MeV
 
     def real_volume_depth(self) -> float:
         V0, Ve = self.params['V0'], self.params['Ve']
@@ -366,9 +451,9 @@ class PangHelium3:
 
     def imag_surface_depth(self) -> float:
         Ws0, Wst, Wse0, Wsew = self.params['Ws0'], self.params['Wst'], self.params['Wse0'], self.params['Wsew']
-        return (Ws0 + Wst * (self.at - 2 * self.zt) / self.at) * math.pow(1 + math.exp(((self.energy - self.coulomb_correction) - Wse0) / Wsew), -1)
+        return (Ws0 + Wst * (self._targ.A - 2 * self._targ.Z) / self._targ.A) * math.pow(1 + math.exp(((self.energy - self.coulomb_correction) - Wse0) / Wsew), -1)
 
-    def real_radius(self) -> float:
+    def real_volume_radius(self) -> float:
         return self.__radius(self.params['r0'], self.params['r00'])
 
     def imag_volume_radius(self) -> float:
@@ -380,7 +465,7 @@ class PangHelium3:
     def coulomb_radius(self) -> float:
         return self.__radius(self.params['rc'], self.params['rc0'])
 
-    def real_diffuseness(self) -> float:
+    def real_volume_diffuseness(self) -> float:
         return self.params['a0']
 
     def imag_volume_diffuseness(self) -> float:
@@ -390,15 +475,12 @@ class PangHelium3:
         return self.params['aw']
 
     def __radius(self, ri: float, ri0: float) -> float:
-        return (ri * math.pow(self.at, 1/3) + ri0) / (math.pow(self.at, 1/3) + math.pow(HELIUM3_NUCLONS, 1/3))
+        return (ri * math.pow(self._targ.A, 1/3) + ri0) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
     
 
-class SuAlpha:
-    def __init__(self, target_nuclons: int, target_charge: int, energy: float) -> None:
-        self.at = target_nuclons
-        self.zt = target_charge
-        self.energy = energy
-
+class SuAlpha(GlobalPotential):
+    def __init__(self, nuclons: int, charge: int, energy: float) -> None:
+        super().__init__(Nuclei(2, 4), Nuclei(charge, nuclons), energy)
         self.params = {
             'V0' :  175.09,
             'V1' : -0.6236,
@@ -419,31 +501,13 @@ class SuAlpha:
             'rc' :  1.3500
         }
 
-    def __call__(self) -> None:
-        Vr = self.real_volume_depth()
-        rv = self.real_radius()
-        av = self.real_diffuseness()
-        Wr = self.imag_volume_depth()
-        Wd = self.imag_surface_depth()
-        rw = self.imag_volume_radius()
-        aw = self.imag_volume_diffuseness()
-        rd = self.imag_surface_radius()
-        ad = self.imag_surface_diffuseness()
-        rc = self.coulomb_radius()
-
-        params = [   Vr,       rv,       av,       Wr,          rw,           aw,          Wd,          rd,            ad,         rc   ]
-        labels = ['V real', 'r real', 'a real', 'W volu', 'r imag volu', 'a imag volu', 'W surf', 'r imag surf', 'a imag surf', 'r coul']
-
-        printer = Printer()
-        printer.show(params, labels, title='Global Optical Model paramaters for 4He')
-
     def real_volume_depth(self) -> float:
         V0, V1, V2, V3, V4 = self.params['V0'], self.params['V1'], self.params['V2'], self.params['V3'], self.params['V4']
         return V0 \
              + V1 * self.energy \
              + V2 * math.pow(self.energy, 2) \
-             + V3 * (self.at - 2 * self.zt) / self.at \
-             + V4 * self.zt * math.pow(self.zt, 1/3)
+             + V3 * (self._targ.A - 2 * self._targ.Z) / self._targ.A \
+             + V4 * self._targ.Z * math.pow(self._targ.Z, 1/3)
 
     def imag_volume_depth(self) -> float:
         U0, U1 = self.params['U0'], self.params['U1']
@@ -451,25 +515,25 @@ class SuAlpha:
 
     def imag_surface_depth(self) -> float:
         W0, W1, W2 = self.params['W0'], self.params['W1'], self.params['W2']
-        return max(0, W0 + W1 * self.energy + W2 * (self.at - 2 * self.zt) / self.at)
+        return max(0, W0 + W1 * self.energy + W2 * (self._targ.A - 2 * self._targ.Z) / self._targ.A)
 
-    def real_radius(self) -> float:
+    def real_volume_radius(self) -> float:
         rr = self.params['rr']
-        return rr * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(ALPHA_NUCLONS, 1/3))
+        return rr * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
 
     def imag_volume_radius(self) -> float:
         rv = self.params['rv']
-        return rv * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(ALPHA_NUCLONS, 1/3))
+        return rv * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
 
     def imag_surface_radius(self) -> float:
         rs = self.params['rs']
-        return rs * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(ALPHA_NUCLONS, 1/3))
+        return rs * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
 
     def coulomb_radius(self) -> float:
         rc = self.params['rc']
-        return rc * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(ALPHA_NUCLONS, 1/3))
+        return rc * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
 
-    def real_diffuseness(self) -> float:
+    def real_volume_diffuseness(self) -> float:
         return self.params['ar']
 
     def imag_volume_diffuseness(self) -> float:
@@ -479,12 +543,9 @@ class SuAlpha:
         return self.params['as']
     
 
-class XuLithium6:
-    def __init__(self, target_nuclons: int, target_charge: int, energy: float) -> None:
-        self.at = target_nuclons
-        self.zt = target_charge
-        self.energy = energy
-
+class XuLithium6(GlobalPotential):
+    def __init__(self, nuclons: int, charge: int, energy: float) -> None:
+        super().__init__(Nuclei(3, 6), Nuclei(charge, nuclons), energy)
         self.params = {
             'V0' :  265.74,
             'V1' : -0.1830,
@@ -502,24 +563,6 @@ class XuLithium6:
             'av' :  0.7260
         }
 
-    def __call__(self) -> None:
-        Vr = self.real_volume_depth()
-        rv = self.real_radius()
-        av = self.real_diffuseness()
-        Wr = self.imag_volume_depth()
-        Wd = self.imag_surface_depth()
-        rw = self.imag_volume_radius()
-        aw = self.imag_volume_diffuseness()
-        rd = self.imag_surface_radius()
-        ad = self.imag_surface_diffuseness()
-        rc = self.coulomb_radius()
-
-        params = [   Vr,       rv,       av,       Wr,          rw,           aw,          Wd,          rd,            ad,         rc   ]
-        labels = ['V real', 'r real', 'a real', 'W volu', 'r imag volu', 'a imag volu', 'W surf', 'r imag surf', 'a imag surf', 'r coul']
-
-        printer = Printer()
-        printer.show(params, labels, title='Global Optical Model paramaters for 6Li')
-
     def real_volume_depth(self) -> float:
         V0, V1 = self.params['V0'], self.params['V1']
         return V0 + V1 * self.energy
@@ -532,23 +575,23 @@ class XuLithium6:
         W0, W1 = self.params['W0'], self.params['W1']
         return max(0, W0 + W1 * self.energy)
     
-    def real_radius(self) -> float:
+    def real_volume_radius(self) -> float:
         rr = self.params['rr']
-        return rr * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(LITHIUM6_NUCLONS, 1/3))
+        return rr * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
 
     def imag_volume_radius(self) -> float:
         rv = self.params['rv']
-        return rv * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(LITHIUM6_NUCLONS, 1/3))
+        return rv * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
 
     def imag_surface_radius(self) -> float:
         rs = self.params['rs']
-        return rs * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(LITHIUM6_NUCLONS, 1/3))
+        return rs * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
 
     def coulomb_radius(self) -> float:
         rc = self.params['rc']
-        return rc * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(LITHIUM6_NUCLONS, 1/3))
+        return rc * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
     
-    def real_diffuseness(self) -> float:
+    def real_volume_diffuseness(self) -> float:
         return self.params['ar']
 
     def imag_volume_diffuseness(self) -> float:
@@ -558,12 +601,9 @@ class XuLithium6:
         return self.params['as']
 
 
-class XuLithium7:
-    def __init__(self, target_nuclons: int, target_charge: int, energy: float) -> None:
-        self.at = target_nuclons
-        self.zt = target_charge
-        self.energy = energy
-
+class XuLithium7(GlobalPotential):
+    def __init__(self, nuclons: int, charge: int, energy: float) -> None:
+        super().__init__(Nuclei(3, 7), Nuclei(charge, nuclons), energy)
         self.params = {
             'V0' :  181.66,
             'V1' : -0.0255,
@@ -573,7 +613,7 @@ class XuLithium7:
             'U0' :  11.092,
             'U1' :  0.3170,
             'U2' :-0.00022,
-            'rr' :  1.1880 if self.at <= 100 else 1.238,
+            'rr' :  1.1880 if self._targ.A <= 100 else 1.2380,
             'rs' :  1.1820,
             'rv' :  1.5930,
             'rc' :  1.8020,
@@ -581,24 +621,6 @@ class XuLithium7:
             'as' :  0.8690,
             'av' :  0.5980
         }
-
-    def __call__(self) -> None:
-        Vr = self.real_volume_depth()
-        rv = self.real_radius()
-        av = self.real_diffuseness()
-        Wr = self.imag_volume_depth()
-        Wd = self.imag_surface_depth()
-        rw = self.imag_volume_radius()
-        aw = self.imag_volume_diffuseness()
-        rd = self.imag_surface_radius()
-        ad = self.imag_surface_diffuseness()
-        rc = self.coulomb_radius()
-
-        params = [   Vr,       rv,       av,       Wr,          rw,           aw,          Wd,          rd,            ad,         rc   ]
-        labels = ['V real', 'r real', 'a real', 'W volu', 'r imag volu', 'a imag volu', 'W surf', 'r imag surf', 'a imag surf', 'r coul']
-
-        printer = Printer()
-        printer.show(params, labels, title='Global Optical Model paramaters for 7Li')
 
     def real_volume_depth(self) -> float:
         V0, V1, V2 = self.params['V0'], self.params['V1'], self.params['V2']
@@ -612,23 +634,23 @@ class XuLithium7:
         W0, W1 = self.params['W0'], self.params['W1']
         return max(0, W0 + W1 * self.energy)
     
-    def real_radius(self) -> float:
+    def real_volume_radius(self) -> float:
         rr = self.params['rr']
-        return rr * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(LITHIUM7_NUCLONS, 1/3))
+        return rr * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
 
     def imag_volume_radius(self) -> float:
         rv = self.params['rv']
-        return rv * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(LITHIUM7_NUCLONS, 1/3))
+        return rv * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
 
     def imag_surface_radius(self) -> float:
         rs = self.params['rs']
-        return rs * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(LITHIUM7_NUCLONS, 1/3))
+        return rs * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
 
     def coulomb_radius(self) -> float:
         rc = self.params['rc']
-        return rc * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(LITHIUM7_NUCLONS, 1/3))
+        return rc * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
     
-    def real_diffuseness(self) -> float:
+    def real_volume_diffuseness(self) -> float:
         return self.params['ar']
 
     def imag_volume_diffuseness(self) -> float:
@@ -638,12 +660,9 @@ class XuLithium7:
         return self.params['as']
     
 
-class SuLithium8:
-    def __init__(self, target_nuclons: int, target_charge: int, energy: float) -> None:
-        self.at = target_nuclons
-        self.zt = target_charge
-        self.energy = energy
-
+class SuLithium8(GlobalPotential):
+    def __init__(self, nuclons: int, charge: int, energy: float) -> None:
+        super().__init__(Nuclei(3, 8), Nuclei(charge, nuclons), energy)
         self.params = {
             'V0' :  187.62,
             'V1' : -0.5130,
@@ -660,53 +679,35 @@ class SuLithium8:
             'av' :  0.5270
         }
 
-    def __call__(self) -> None:
-        Vr = self.real_volume_depth()
-        rv = self.real_radius()
-        av = self.real_diffuseness()
-        Wr = self.imag_volume_depth()
-        Wd = self.imag_surface_depth()
-        rw = self.imag_volume_radius()
-        aw = self.imag_volume_diffuseness()
-        rd = self.imag_surface_radius()
-        ad = self.imag_surface_diffuseness()
-        rc = self.coulomb_radius()
-
-        params = [   Vr,       rv,       av,       Wr,          rw,           aw,          Wd,          rd,            ad,         rc   ]
-        labels = ['V real', 'r real', 'a real', 'W volu', 'r imag volu', 'a imag volu', 'W surf', 'r imag surf', 'a imag surf', 'r coul']
-
-        printer = Printer()
-        printer.show(params, labels, title='Global Optical Model paramaters for 7Li')
-
     def real_volume_depth(self) -> float:
         V0, V1 = self.params['V0'], self.params['V1']
         return V0 + V1 * self.energy
     
     def imag_volume_depth(self) -> float:
-        U0, U1 = self.params['U0'], self.params['U1'] #The U2 parameter was not in the original article
+        U0, U1 = self.params['U0'], self.params['U1']
         return U0 + U1 * self.energy
 
     def imag_surface_depth(self) -> float:
         W0, W1 = self.params['W0'], self.params['W1']
         return W0 + W1 * self.energy
     
-    def real_radius(self) -> float:
+    def real_volume_radius(self) -> float:
         rr = self.params['rr']
-        return rr * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(LITHIUM8_NUCLONS, 1/3))
+        return rr * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
 
     def imag_volume_radius(self) -> float:
         rv = self.params['rv']
-        return rv * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(LITHIUM8_NUCLONS, 1/3))
+        return rv * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
 
     def imag_surface_radius(self) -> float:
         rs = self.params['rs']
-        return rs * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(LITHIUM8_NUCLONS, 1/3))
+        return rs * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
 
     def coulomb_radius(self) -> float:
         rc = self.params['rc']
-        return rc * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(LITHIUM8_NUCLONS, 1/3))
+        return rc * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
     
-    def real_diffuseness(self) -> float:
+    def real_volume_diffuseness(self) -> float:
         return self.params['ar']
 
     def imag_volume_diffuseness(self) -> float:
@@ -716,12 +717,9 @@ class SuLithium8:
         return self.params['as']
 
 
-class XuBeryllium9:
-    def __init__(self, target_nuclons: int, target_charge: int, energy: float) -> None:
-        self.at = target_nuclons
-        self.zt = target_charge
-        self.energy = energy
-
+class XuBeryllium9(GlobalPotential):
+    def __init__(self, nuclons: int, charge: int, energy: float) -> None:
+        super().__init__(Nuclei(4, 9), Nuclei(charge, nuclons), energy)
         self.params = {
             'V0' :  268.07,
             'V1' : -0.1800,
@@ -740,24 +738,6 @@ class XuBeryllium9:
             'av' :  0.6000,
         }
 
-    def __call__(self) -> None:
-        Vr = self.real_volume_depth()
-        rv = self.real_radius()
-        av = self.real_diffuseness()
-        Wr = self.imag_volume_depth()
-        Wd = self.imag_surface_depth()
-        rw = self.imag_volume_radius()
-        aw = self.imag_volume_diffuseness()
-        rd = self.imag_surface_radius()
-        ad = self.imag_surface_diffuseness()
-        rc = self.coulomb_radius()
-
-        params = [   Vr,       rv,       av,       Wr,          rw,           aw,          Wd,          rd,            ad,         rc   ]
-        labels = ['V real', 'r real', 'a real', 'W volu', 'r imag volu', 'a imag volu', 'W surf', 'r imag surf', 'a imag surf', 'r coul']
-
-        printer = Printer()
-        printer.show(params, labels, title='Global Optical Model paramaters for 9Be')
-
     def real_volume_depth(self) -> float:
         V0, V1, V2 = self.params['V0'], self.params['V1'], self.params['V2']
         return V0 + V1 * self.energy + V2 * math.pow(self.energy, 2)
@@ -770,23 +750,23 @@ class XuBeryllium9:
         W0, W1 = self.params['W0'], self.params['W1']
         return max(0, W0 + W1 * self.energy)
     
-    def real_radius(self) -> float:
+    def real_volume_radius(self) -> float:
         rr0, rr1 = self.params['rr0'], self.params['rr1']
-        return (rr0 + rr1 * math.pow(self.at, 1/3)) * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(BERYLLIUM9_NUCLONS, 1/3))
+        return (rr0 + rr1 * math.pow(self._targ.A, 1/3)) * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
 
     def imag_volume_radius(self) -> float:
         rv = self.params['rv']
-        return rv * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(BERYLLIUM9_NUCLONS, 1/3))
+        return rv * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
 
     def imag_surface_radius(self) -> float:
         rs = self.params['rs']
-        return rs * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(BERYLLIUM9_NUCLONS, 1/3))
+        return rs * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
 
     def coulomb_radius(self) -> float:
         rc = self.params['rc']
-        return rc * math.pow(self.at, 1/3) / (math.pow(self.at, 1/3) + math.pow(BERYLLIUM9_NUCLONS, 1/3))
+        return rc * math.pow(self._targ.A, 1/3) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
     
-    def real_diffuseness(self) -> float:
+    def real_volume_diffuseness(self) -> float:
         return self.params['ar']
 
     def imag_volume_diffuseness(self) -> float:
@@ -797,5 +777,5 @@ class XuBeryllium9:
 
 
 if __name__ == '__main__':
-    lith = SuLithium8(7, 3, 11.0)
-    lith()
+    lg = XuLithium6(12, 6, 20.0)
+    print(lg())

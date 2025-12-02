@@ -116,7 +116,7 @@ class EcisGenerator:
                 self.__use_globalop = False
                 return self.create_sample(beam, target, energy)
             
-            Vr, rv, av = gop.real_volume_depth(), gop.real_radius(), gop.real_diffuseness()
+            Vr, rv, av = gop.real_volume_depth(), gop.real_volume_radius(), gop.real_volume_diffuseness()
             Wv, rw, aw = gop.imag_volume_depth(), gop.imag_volume_radius(), gop.imag_volume_diffuseness()
             Wd, rd, ad = gop.imag_surface_depth(), gop.imag_surface_radius(), gop.imag_surface_diffuseness()
             rc = gop.coulomb_radius()
