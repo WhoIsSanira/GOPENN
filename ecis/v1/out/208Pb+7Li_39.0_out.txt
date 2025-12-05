@@ -1,0 +1,1877 @@
+1                    E. C. I. S. CODE FOR COUPLED CHANNELS CALCULATIONS ( 1988 ) WORKING FIELD LENGTH =    240000
+
+                        TO OBTAIN THE INPUT DESCRIPTION, PUNCH 'DESCRIPTION ' IN COLUMNS 1-12 OF THE FIRST CARD
+
+
+  1- T - ROTATIONAL MODEL-(.F.: VIBRATIONAL MODEL)         ! 44- F - COULOMB CORRECTIONS.
+  2- F - SECOND ORDER VIBRATIONAL MODEL-(.F.: FIRST ORDER) ! 45- F - ANGULAR MOMENTUM LIMIT FOR COULOMB CORRECTIONS.
+         OR CONSTRAINED ASYMMETRIC ROTATIONAL MODEL.       ! 46- F - RESTRICTED COULOMB CORREETIONS.
+  3- F - ANHARMONIC VIBRATIONAL MODEL-(.F.: HARMONIC) OR   !
+         ASYMMETRIC ROTATIONAL MODEL-(.F.: SYMMETRIC)      ! 51- F - OUTPUT OF POTENTIALS.
+  4- F - PARAMETRIZED SPIN-ORBIT DEFORMATION-(.F.:STANDARD)! 52- F - OUTPUT OF REDUCED NUCLEAR MATRIX ELEMENTS.
+  5- F - DIFFERENT DEFORMATION FOR EACH POTENTIAL(.F.:SAME)! 53- T - OUTPUT OF THE NUMBER OF ITERATIONS.
+  6- F - DEFORMATION DIVIDED BY THE RATIO OF THE RADIUS OF ! 54- T - OUTPUT OF THE LENGTH USED IN THE WORKING FIELD.
+         THE POTENTIAL TO THE RADIUS OF THE REAL POTENTIAL.! 55- F - OUTPUT OF C-MATRIX ELEMENTS.
+  7- F - NUCLEAR MATRIX ELEMENTS AND FORM FACTORS ON CARDS.! 56- T - OUTPUT OF S-MATRIX ELEMENTS AND COMPOUND NUCLEUS
+  8- F - RELATIVISTIC KINEMATICS.                          !         INTERMEDIATE RESULTS.
+  9- F - LO(6)=.TRUE. DOES NOT APPLY TO SPIN-ORBIT.        ! 57- F - OUTPUT OF PHASE-SHIFTS AT EACH E.C.I.S. ITERATION.
+                                                           ! 58- F - OUTPUT OF THE COEFFICIENTS OF EACH FORM FACTOR.
+ 11- F - DEFORMED COULOMB POTENTIAL.                       !         FOR ALL SETS OF EQUATIONS.
+ 12- F - DEFORMED IMAGINARY POTENTIAL.                     ! 59- F - OUTPUT OF TIME DIFFERENCES IN A RUN.
+ 13- F - DEFORMED REAL SPIN-ORBIT/TENSOR POTENTIAL.        !
+ 14- F - DEFORMED IMAGINARY SPIN-ORBIT/TENSOR POTENTIAL.   ! 61- F - REDUCED NUCLEAR MATRIX ELEMENTS PUNCHED ON CARDS.
+ 15- F - REDUCED NUCLEAR MATRIX ELEMENTS READ FROM CARDS.  ! 62- F - POTENTIALS PUNCHED ON CARDS.
+ 16- T - HEAVY-ION DEFINITION OF RADII AND DEFORMATIONS.   ! 63- F - PENETRABILITIES PUNCHED ON CARDS.
+ 17- F - FOLDING MODEL.                                    ! 64- F - RESULTS AT EQUIDISTANT ANGLES PUNCHED ON CARDS.
+ 18- F - PROJECTILE-TARGET ANTISYMMETRISATION.             ! 65- F - NO CALCULATION AT EQUIDISTANT ANGLES.
+ 19- F - DEFORMED COULOMB SPIN-ORBIT POTENTIAL.            ! 66- F - NON STANDARD OBSERVABLES AT EQUIDISTANT ANGLES.
+                                                           ! 67- F - NO PLOT OF EXPERIMENTAL DATA.
+ 21- F - USUAL COUPLED EQUATIONS-(.F.: ITERATIONS)         ! 68- F - NO PLOT OF CROSS-SECTIONS AT EQUIDISTANT ANGLES.
+ 22- F - NO USE OF PADE APPROXIMANTS FOR CONVERGENCE OF    ! 69- F - NO PLOT OF POLARIZATIONS AT EQUIDISTANT ANGLES.
+         THE ITERATIONS.                                   !
+ 23- F - NO USE OF PADE APPROXIMANT RESULTS WHEN           ! 71- T - DETAILED OUTPUT OF LOGICAL CONTROLS.
+         CONVERGENCE IS NOT OBTAINED.                      ! 72- F - NO OUTPUT OF EXPERIMENTAL DATA AS THEY ARE READ.
+ 24- F - COUPLING POTENTIALS COMPUTED AT EACH ITERATION.   ! 73- F - NO OUTPUT OF EXTERNAL POTENTIALS AS THEY ARE READ.
+ 25- T - COMPLETE CALCULATION UP TO THE END-(.F.: ONE ITE- ! 74- T - OUTPUT OF VARIATIONS IN STORAGE.
+         RATION ONLY AS SOON AS TWO ITERATIONS ARE ENOUGH) ! 75- F - NO COMPLETE OUTPUT AT THE FIRST RUN OF A SEARCH.
+ 26- T - INTEGRATION STABILISED FOR LONG RANGE POTENTIAL.  ! 76- F - LO(51) TO LO(64) ARE ALWAYS USED-(.F.: ONLY FOR
+ 27- F - NUMEROV'S METHOD FOR SINGLE EQUATIONS-(.F.: MODI- !         COMPLETE OUTPUT)
+         FIED NUMEROV'S METHOD)                            ! 77- F - NO OUTPUT OF TIME DIFFERENCES DURING THE SEARCH.
+ 28- T - COMPUTATION UP TO J-CONVERGENCE-(.F.: STOP WHEN   ! 78- F - NO OUTPUT OF DIFFERENCES BETWEEN EXPERIMENTAL
+         ALL THE INHOMOGENEOUS TERMS ARE NEGLIGIBLE)       !         AND CALCULATED VALUES.
+ 29- F - NO DIAGONAL TERM IN SECOND MEMBERS.               !
+                                                           ! 81- F - HAUSER-FESHBACH CORRECTIONS TO CROSS-SECTIONS.
+ 31- T - INPUT OF EXPERIMENTAL DATA AND CHI2 CALCULATION.  ! 82- F - SIMPLEST COMPOUND NUCLEUS FORMALISM.
+ 32- T - AUTOMATIC SEARCH ON SOME PARAMETERS.              ! 83- F - NO ENGELBRETCH-WEIDENMULLER TRANSF. IN C.-N.
+ 33- F - SYMMETRIZED CHL2 FOR CROSS-SECTIONS.              ! 84- F - UNCOUPLED LEVELS FOR COMPOUND NUCLEUS.
+ 34- F - NUMBER OF EVALUATIONS LIMITED BY THE JOB CARD.    ! 85- F - FISSION DATA IN COMPOUND NUCLEUS.
+ 35- F - SEARCH SAVED ON TAPE 8 IF ENDED BY LACK OF TIME.  ! 86- F - GAMMA EMISSION DATA IN COMPOUND NUCLEUS.
+ 36- F - RESTART A SEARCH FROM TAPE 8.                     !
+ 37- F - NEXT CALCULATION CHANGING ENERGY AND/OR SOME      ! 91- F - ANGULAR DISTRIBUTION AT EQUIDISTANT ANGLES IN THE
+         PARAMETERS.                                       !         LABORATORY SYSTEM.
+                                                           ! 92- F - PURE DWBA CALCULATION.
+ 41- F - FACTORIZATION OF 1/(1-COS(THETA)) IN AMPLITUDES.  ! 93- F - NO RECOIL CORRECTION FOR REACTIONS.
+ 42- F - SCHMIDT'S ORTHOGONALIZATION OF SOLUTIONS IN USUAL ! 98- F - USE OF REST MASS IN DIRAC EQUATIONS.
+         COUPLED EQUATIONS.                                ! 99- F - SCHROEDINGER EQUIVALENT TO DIRAC EQUATION.
+ 43- F - INTERPOLATION ON TOTAL SPIN.                      !100- F - COMPLETE DIRAC EQUATION.
+1
+          **********************************************************************************
+          *                                                                                *
+          *    208Pb + 7Li = 208Pb + 7Li E = 39.0 MeV                                      *
+          *                                                                                *
+          **********************************************************************************
+
+ FIRST CALL TO HORA                   0HUND OF S AVAILABLE   OR          -1 UNITS
+ MAXIMUM NUMBER OF J    30  (MIN  0) STOP WHEN MAXIMUM S-MATRIX ELEMENT IS LESS THAN        0.1000E-04
+
+ PLOT CONDITIONS FOR CROSS-SECTIONS    6    2     FOR POLARIZATIONS    1    1
+
+          ITERATION METHOD:  MAXIMUM NUMBER OF ITERATIONS        20
+          CONVERGENCE CRITERION:       0.10E-04 FOR S-MATRIX       0.10E-04 FOR POTENTIALS AND FUNCTIONS
+
+
+ SYMMETRIC ROTATIONAL MODEL
+
+
+ TARGET              MASS = 208.00000           PRODUCT OF CHARGES =  246.           AT**1/3 =   0.592499E+01
+ INCIDENT PARTICLE   MASS =   7.00000   REDUCED MASS =   0.677209E+01   SPIN = 0.0   AP**1/3 =   0.191293E+01
+          ENERGY(LAB) =   0.390000E+02 MEV          ENERGY(C. M.) =   0.377302E+02 MEV
+
+ N =  1 -   SPIN = 0.0  EXCITATION ENERGY =  0.0000 MEV          POTENTIAL    1
++                                                                                     GROUND STATE BAND
+
+          MULTIPOLE EXPANSION UP TO IQMAX =  0                    K =   0.00 BAND
+
+ BETA(I,J) FOR  L   K         V         W        VS        WS       VSO       WSO      COUL S.O. COUL
+
+
+          AFTER HEAVY ION CORRECTION I =  1
+
+
+ BETA(I,J) FOR  L   K         V         W        VS        WS       VSO       WSO      COUL S.O. COUL
+
+
+
+ OPTICAL POTENTIALS  **  1 **     REDUCED RADIUS MULTIPLIED BY     0.783792E+01
+
+      DEFORMED  VOLUME/SCALAR REAL POTENTIAL
+              DEPTH  179.699997 MEV   RADIUS 7.336297 FERMI (REDUCED VALUE 0.936000)    DIFFUSENESS 0.852000 FERMI
+
+  NOT DEFORMED  VOLUME/SCALAR IMAGINARY POTENTIAL
+              DEPTH   23.120001 MEV   RADIUS 9.436860 FERMI (REDUCED VALUE 1.204000)    DIFFUSENESS 0.598000 FERMI
+
+      DEFORMED  SURFACE/VECTOR REAL POTENTIAL
+              DEPTH    0.000000 MEV   RADIUS 0.000000 FERMI (REDUCED VALUE 0.000000)    DIFFUSENESS 0.000000 FERMI
+
+  NOT DEFORMED  SURFACE/VECTOR IMAGINARY POTENTIAL
+              DEPTH   35.630001 MEV   RADIUS 7.007104 FERMI (REDUCED VALUE 0.894000)    DIFFUSENESS 0.869000 FERMI
+
+  NOT DEFORMED  REAL SPIN-ORBIT/TENSOR POTENTIAL
+              DEPTH    0.000000 MEV   RADIUS 0.000000 FERMI (REDUCED VALUE 0.000000)    DIFFUSENESS 0.000000 FERMI
+
+  NOT DEFORMED  IMAGINARY SPIN-ORBIT/TENSOR POTENTIAL
+              DEPTH    0.000000 MEV   RADIUS 0.000000 FERMI (REDUCED VALUE 0.000000)    DIFFUSENESS 0.000000 FERMI
+
+  NOT DEFORMED  COULOMB POTENTIAL
+ PRODUCT OF CHARGES     246.          RADIUS10.675252 FERMI (REDUCED VALUE 1.362000)    DIFFUSENESS 0.000000 FERMI
+
+  NOT DEFORMED  SPIN-ORBIT COULOMB POTENTIAL
+              DEPTH    0.000000 MEV   RADIUS 0.000000 FERMI (REDUCED VALUE 0.000000)    DIFFUSENESS 0.000000 FERMI
+              THIRD CHARGE PARAMETER 0.000000
+
+ INTEGRATION STEP SIZE = 0.14264          MATCHING RADIUS =  19.542 FERMI
+
+ SCATTERING ANGLES FROM  1.000 IN STEPS OF  1.000 UP TO 179.000 DEGREES   AVERAGED WITH +/-   0.000 DEGREES
+
+
+       1 SOLUTIONS         1 COUPLED EQUATIONS         1 INDEPENDENT AMPLITUDES
+
+
+
+         1  EXPERIMENTAL ANGULAR DISTRIBUTIONS
+
+
+  ANG. DISTR.  1       46 DATA   LEVEL =  1     KIND =  0
+
+     WEIGHT  0.1000E+01     NORM  0.1000E+01  WITH ERROR  0.0000E+00
+
+                       ANGLE              VALUE               ERROR            ANG. WIDTH          ANG. ERROR
+
+ INPUT OF PERCENTAGE ERRORS
+         1        0.313000E+02        0.102454E+05        0.102454E+04        0.000000E+00        0.000000E+00
+         2        0.336000E+02        0.786917E+04        0.786917E+03        0.000000E+00        0.000000E+00
+         3        0.351000E+02        0.660930E+04        0.660930E+03        0.000000E+00        0.000000E+00
+         4        0.370000E+02        0.545025E+04        0.545025E+03        0.000000E+00        0.000000E+00
+         5        0.381000E+02        0.476110E+04        0.476110E+03        0.000000E+00        0.000000E+00
+         6        0.403000E+02        0.372358E+04        0.372358E+03        0.000000E+00        0.000000E+00
+         7        0.426000E+02        0.297030E+04        0.297030E+03        0.000000E+00        0.000000E+00
+         8        0.429000E+02        0.291965E+04        0.291965E+03        0.000000E+00        0.000000E+00
+         9        0.441000E+02        0.269810E+04        0.269810E+03        0.000000E+00        0.000000E+00
+        10        0.456000E+02        0.239370E+04        0.239370E+03        0.000000E+00        0.000000E+00
+        11        0.475000E+02        0.212296E+04        0.212296E+03        0.000000E+00        0.000000E+00
+        12        0.490000E+02        0.193535E+04        0.193535E+03        0.000000E+00        0.000000E+00
+        13        0.506000E+02        0.173083E+04        0.173083E+03        0.000000E+00        0.000000E+00
+        14        0.521000E+02        0.158039E+04        0.158039E+03        0.000000E+00        0.000000E+00
+        15        0.540000E+02        0.138373E+04        0.138373E+03        0.000000E+00        0.000000E+00
+        16        0.562000E+02        0.116177E+04        0.116177E+03        0.000000E+00        0.000000E+00
+        17        0.584000E+02        0.956798E+03        0.956798E+02        0.000000E+00        0.000000E+00
+        18        0.595000E+02        0.864823E+03        0.864823E+02        0.000000E+00        0.000000E+00
+        19        0.614000E+02        0.736016E+03        0.736016E+02        0.000000E+00        0.000000E+00
+        20        0.621000E+02        0.687047E+03        0.687047E+02        0.000000E+00        0.000000E+00
+        21        0.631000E+02        0.585388E+03        0.585388E+02        0.000000E+00        0.000000E+00
+        22        0.650000E+02        0.497350E+03        0.497350E+02        0.000000E+00        0.000000E+00
+        23        0.661000E+02        0.436736E+03        0.436736E+02        0.000000E+00        0.000000E+00
+        24        0.679000E+02        0.366542E+03        0.366542E+02        0.000000E+00        0.000000E+00
+        25        0.690000E+02        0.319612E+03        0.319612E+02        0.000000E+00        0.000000E+00
+        26        0.701000E+02        0.281613E+03        0.281613E+02        0.000000E+00        0.000000E+00
+        27        0.719000E+02        0.235565E+03        0.235565E+02        0.000000E+00        0.000000E+00
+        28        0.726000E+02        0.206691E+03        0.206691E+02        0.000000E+00        0.000000E+00
+        29        0.741000E+02        0.175066E+03        0.175066E+02        0.000000E+00        0.000000E+00
+        30        0.759000E+02        0.145480E+03        0.145480E+02        0.000000E+00        0.000000E+00
+        31        0.770000E+02        0.125695E+03        0.125695E+02        0.000000E+00        0.000000E+00
+        32        0.781000E+02        0.107564E+03        0.107564E+02        0.000000E+00        0.000000E+00
+        33        0.796000E+02        0.894210E+02        0.894210E+01        0.000000E+00        0.000000E+00
+        34        0.811000E+02        0.744654E+02        0.744654E+01        0.000000E+00        0.000000E+00
+        35        0.833000E+02        0.571550E+02        0.571550E+01        0.000000E+00        0.000000E+00
+        36        0.844000E+02        0.479852E+02        0.479852E+01        0.000000E+00        0.000000E+00
+        37        0.859000E+02        0.404612E+02        0.404612E+01        0.000000E+00        0.000000E+00
+        38        0.881000E+02        0.290496E+02        0.290496E+01        0.000000E+00        0.000000E+00
+        39        0.900000E+02        0.229605E+02        0.229605E+01        0.000000E+00        0.000000E+00
+        40        0.922000E+02        0.174040E+02        0.174040E+01        0.000000E+00        0.000000E+00
+        41        0.952000E+02        0.115076E+02        0.115076E+01        0.000000E+00        0.000000E+00
+        42        0.990000E+02        0.759390E+01        0.759390E+00        0.000000E+00        0.000000E+00
+        43        0.103900E+03        0.416240E+01        0.416240E+00        0.000000E+00        0.000000E+00
+        44        0.107600E+03        0.208260E+01        0.208260E+00        0.000000E+00        0.000000E+00
+        45        0.111000E+03        0.227340E+01        0.227340E+00        0.000000E+00        0.000000E+00
+        46        0.115100E+03        0.130610E+01        0.130610E+00        0.000000E+00        0.000000E+00
+
+
+         2 PARAMETERS IN SEARCH
+         9 RESULTS STORED
+        20 RUNS    STARTING SCALE     20.00
+            MULTIPLICATION FACTOR      1.00
+
+         1         1          0.01000000
+         2         2          0.01000000
+
+ LEVEL       WAVE NUMBER  COULOMB PARAMETER   SQRT(K OUT/K IN)   REL. ENHANC.      REDUCED MASS        STEPSIZE
+     1      3.4964151542     16.4132227360      1.0000000000      1.0000000000      6.7720930233      0.1426395178
+          REQUIRED WORKING FIELD      2481
+          REQUIRED WORKING FIELD      4135  FOR J =    0.0
+
+
+ CHANNEL SPIN AND PARITY =    0.0+ 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1    0    0.0     -2.5137029D-02 -2.2060060D-02 I     0.03344423-2.42129641-2.42129641     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =    2.0
+
+
+ CHANNEL SPIN AND PARITY =    2.0+ 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1    2    2.0     -2.3777956D-02 -2.5995228D-02 I     0.03522986-2.31167640-2.67576332     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =    4.0
+
+
+ CHANNEL SPIN AND PARITY =    4.0+ 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1    4    4.0     -1.8960731D-02 -3.4982011D-02 I     0.03979008-2.06748738 3.01195102     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =    6.0
+
+
+ CHANNEL SPIN AND PARITY =    6.0+ 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1    6    6.0     -6.9256828D-03 -4.7715251D-02 I     0.04821525-1.71493584 2.07229001     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =    8.0
+
+
+ CHANNEL SPIN AND PARITY =    8.0+ 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1    8    8.0      1.7299531D-02 -6.0262775D-02 I     0.06269670-1.29124532 0.78279726     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =   10.0
+
+
+ CHANNEL SPIN AND PARITY =   10.0+ 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1   10   10.0      5.8246786D-02 -6.5112628D-02 I     0.08736328-0.84099802-0.86437078     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =   12.0
+
+
+ CHANNEL SPIN AND PARITY =   12.0+ 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1   12   12.0      1.1880890D-01 -5.2070007D-02 I     0.12971831-0.41305396-2.87979153     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =   14.0
+
+
+ CHANNEL SPIN AND PARITY =   14.0+ 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1   14   14.0      2.0195021D-01 -1.1700229D-02 I     0.20228886-0.05787151 1.00640159     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =   16.0
+
+
+ CHANNEL SPIN AND PARITY =   16.0+ 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1   16   16.0      3.1591342D-01  5.6857748D-02 I     0.32098924 0.17807249-1.78370960     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =   18.0
+
+
+ CHANNEL SPIN AND PARITY =   18.0+ 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1   18   18.0      4.7193497D-01  1.3047800D-01 I     0.48963979 0.26973657 1.32227451     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =   20.0
+
+
+ CHANNEL SPIN AND PARITY =   20.0+ 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1   20   20.0      6.5274630D-01  1.6214554D-01 I     0.67258376 0.24347706-2.18765433     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =   22.0
+
+
+ CHANNEL SPIN AND PARITY =   22.0+ 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1   22   22.0      8.0288929D-01  1.3830318D-01 I     0.81471405 0.17058280 0.34821349     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =   24.0
+
+
+ CHANNEL SPIN AND PARITY =   24.0+ 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1   24   24.0      8.9560398D-01  9.4646435D-02 I     0.90059116 0.10528810 2.72218965     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =   26.0
+
+
+ CHANNEL SPIN AND PARITY =   26.0+ 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1   26   26.0      9.4529389D-01  5.8189981D-02 I     0.94708321 0.06147998-1.31657331     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =   28.0
+
+
+ CHANNEL SPIN AND PARITY =   28.0+ 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1   28   28.0      9.7107900D-01  3.4020821D-02 I     0.97167476 0.03501972 0.80977964     0.00000000
+ MAXIMUM J-VALUE =  28.0          MAXIMUM SCATTERING COEFFICIENT AT THE END   0.315E-01
+          REQUIRED WORKING FIELD      4135  FOR J =    1.0
+
+
+ CHANNEL SPIN AND PARITY =    1.0- 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1    1    1.0     -2.4731407D-02 -2.3373377D-02 I     0.03402877-2.38441766 0.63547246     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =    3.0
+
+
+ CHANNEL SPIN AND PARITY =    3.0- 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1    3    3.0     -2.1993593D-02 -2.9895781D-02 I     0.03711436-2.20506653 0.21087148     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =    5.0
+
+
+ CHANNEL SPIN AND PARITY =    5.0- 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1    5    5.0     -1.4144427D-02 -4.1046947D-02 I     0.04341563-1.90264473-0.55607558     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =    7.0
+
+
+ CHANNEL SPIN AND PARITY =    7.0- 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1    7    7.0      3.3478737D-03 -5.4396996D-02 I     0.05449992-1.50932866-1.66982573     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =    9.0
+
+
+ CHANNEL SPIN AND PARITY =    9.0- 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1    9    9.0      3.5463256D-02 -6.4250898D-02 I     0.07338815-1.06645755-3.13701483     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =   11.0
+
+
+ CHANNEL SPIN AND PARITY =   11.0- 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1   11   11.0      8.5942570D-02 -6.1496155D-02 I     0.10567830-0.62108575 1.31625653     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =   13.0
+
+
+ CHANNEL SPIN AND PARITY =   13.0- 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1   13   13.0      1.5723201D-01 -3.5697520D-02 I     0.16123343-0.22325266-0.88813971     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =   15.0
+
+
+ CHANNEL SPIN AND PARITY =   15.0- 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1   15   15.0      2.5425049D-01  1.9720911D-02 I     0.25501417 0.07740990 2.80239500     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =   17.0
+
+
+ CHANNEL SPIN AND PARITY =   17.0- 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1   17   17.0      3.8852890D-01  9.5820389D-02 I     0.40017028 0.24179834-0.18430627     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =   19.0
+
+
+ CHANNEL SPIN AND PARITY =   19.0- 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1   19   19.0      5.6244161D-01  1.5402706D-01 I     0.58315083 0.26730076 2.74480299     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =   21.0
+
+
+ CHANNEL SPIN AND PARITY =   21.0- 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1   21   21.0      7.3469889D-01  1.5537149D-01 I     0.75094791 0.20840584-0.89590726     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =   23.0
+
+
+ CHANNEL SPIN AND PARITY =   23.0- 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1   23   23.0      8.5599000D-01  1.1660592D-01 I     0.86389572 0.13539010 1.55263572     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =   25.0
+
+
+ CHANNEL SPIN AND PARITY =   25.0- 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1   25   25.0      9.2447143D-01  7.4863154D-02 I     0.92749767 0.08080309-2.42345210     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =   27.0
+
+
+ CHANNEL SPIN AND PARITY =   27.0- 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1   27   27.0      9.6027778D-01  4.4687969D-02 I     0.96131703 0.04650295-0.23913835     0.00000000
+          REQUIRED WORKING FIELD      4135  FOR J =   29.0
+
+
+ CHANNEL SPIN AND PARITY =   29.0- 
+
+  IC ICP N    L    J                  S MATRIX                    !S!       PHASE /WITH COUL.           H.-F.
+   1  1  1   29   29.0      9.7889184D-01  2.5729843D-02 I     0.97922993 0.02627861 1.83108641     0.00000000
+ MAXIMUM J-VALUE =  29.0          MAXIMUM SCATTERING COEFFICIENT AT THE END   0.234E-01
+1     208Pb + 7Li = 208Pb + 7Li E = 39.0 MeV                                  
+
+
+
+
+                              **********   STATE    1    **********
+
+
+
+
+                                            CROSS-SECTION     
+
+          ANGLE          CALC. VAL.           EXP. VAL.          EXP. ERROR          COR. ERROR             CHI2
+
+          31.300         0.10368E+05         0.10245E+05         0.10245E+04         0.10245E+04         0.14287E-01
+          33.600         0.79032E+04         0.78692E+04         0.78692E+03         0.78692E+03         0.18744E-02
+          35.100         0.66744E+04         0.66093E+04         0.66093E+03         0.66093E+03         0.97104E-02
+          37.000         0.54253E+04         0.54503E+04         0.54503E+03         0.54503E+03         0.20914E-02
+          38.100         0.48390E+04         0.47611E+04         0.47611E+03         0.47611E+03         0.26743E-01
+          40.300         0.38711E+04         0.37236E+04         0.37236E+03         0.37236E+03         0.15691E+00
+          42.600         0.31518E+04         0.29703E+04         0.29703E+03         0.29703E+03         0.37345E+00
+          42.900         0.30752E+04         0.29197E+04         0.29197E+03         0.29197E+03         0.28389E+00
+          44.100         0.27938E+04         0.26981E+04         0.26981E+03         0.26981E+03         0.12593E+00
+          45.600         0.24943E+04         0.23937E+04         0.23937E+03         0.23937E+03         0.17658E+00
+          47.500         0.21927E+04         0.21230E+04         0.21230E+03         0.21230E+03         0.10790E+00
+          49.000         0.19860E+04         0.19353E+04         0.19353E+03         0.19353E+03         0.68554E-01
+          50.600         0.17782E+04         0.17308E+04         0.17308E+03         0.17308E+03         0.74873E-01
+          52.100         0.16016E+04         0.15804E+04         0.15804E+03         0.15804E+03         0.17967E-01
+          54.000         0.13975E+04         0.13837E+04         0.13837E+03         0.13837E+03         0.99283E-02
+          56.200         0.11707E+04         0.11618E+04         0.11618E+03         0.11618E+03         0.59150E-02
+          58.400         0.96967E+03         0.95680E+03         0.95680E+02         0.95680E+02         0.18110E-01
+          59.500         0.88003E+03         0.86482E+03         0.86482E+02         0.86482E+02         0.30912E-01
+          61.400         0.73506E+03         0.73602E+03         0.73602E+02         0.73602E+02         0.16720E-03
+          62.100         0.68518E+03         0.68705E+03         0.68705E+02         0.68705E+02         0.74173E-03
+          63.100         0.61874E+03         0.58539E+03         0.58539E+02         0.58539E+02         0.32452E+00
+          65.000         0.50972E+03         0.49735E+03         0.49735E+02         0.49735E+02         0.61836E-01
+          66.100         0.45480E+03         0.43674E+03         0.43674E+02         0.43674E+02         0.17111E+00
+          67.900         0.37350E+03         0.36654E+03         0.36654E+02         0.36654E+02         0.36036E-01
+          69.000         0.32938E+03         0.31961E+03         0.31961E+02         0.31961E+02         0.93466E-01
+          70.100         0.29048E+03         0.28161E+03         0.28161E+02         0.28161E+02         0.99243E-01
+          71.900         0.23755E+03         0.23556E+03         0.23556E+02         0.23556E+02         0.71350E-02
+          72.600         0.21967E+03         0.20669E+03         0.20669E+02         0.20669E+02         0.39460E+00
+          74.100         0.18475E+03         0.17507E+03         0.17507E+02         0.17507E+02         0.30584E+00
+          75.900         0.14875E+03         0.14548E+03         0.14548E+02         0.14548E+02         0.50404E-01
+          77.000         0.13053E+03         0.12569E+03         0.12569E+02         0.12569E+02         0.14823E+00
+          78.100         0.11514E+03         0.10756E+03         0.10756E+02         0.10756E+02         0.49642E+00
+          79.600         0.97510E+02         0.89421E+02         0.89421E+01         0.89421E+01         0.81821E+00
+          81.100         0.82218E+02         0.74465E+02         0.74465E+01         0.74465E+01         0.10839E+01
+          83.300         0.63424E+02         0.57155E+02         0.57155E+01         0.57155E+01         0.12032E+01
+          84.400         0.56039E+02         0.47985E+02         0.47985E+01         0.47985E+01         0.28172E+01
+          85.900         0.47917E+02         0.40461E+02         0.40461E+01         0.40461E+01         0.33956E+01
+          88.100         0.38166E+02         0.29050E+02         0.29050E+01         0.29050E+01         0.98483E+01
+          90.000         0.30787E+02         0.22961E+02         0.22961E+01         0.22961E+01         0.11620E+02
+          92.200         0.24184E+02         0.17404E+02         0.17404E+01         0.17404E+01         0.15175E+02
+          95.200         0.17868E+02         0.11508E+02         0.11508E+01         0.11508E+01         0.30554E+02
+          99.000         0.11268E+02         0.75939E+01         0.75939E+00         0.75939E+00         0.23406E+02
+         103.900         0.66659E+01         0.41624E+01         0.41624E+00         0.41624E+00         0.36176E+02
+         107.600         0.43892E+01         0.20826E+01         0.20826E+00         0.20826E+00         0.12267E+03
+         111.000         0.35211E+01         0.22734E+01         0.22734E+00         0.22734E+00         0.30119E+02
+         115.100         0.24381E+01         0.13061E+01         0.13061E+00         0.13061E+00         0.75118E+02
+
+
+ EXPERIMENTAL NORMALIZATION    0.10000E+01
+ NORMALIZATION ERROR           0.00000E+00
+ CALCULATED NORMALIZATION      0.10000E+01
+
+ ***** CHI2 =   0.367694E+03   *****
+
+1
+                                             +      CROSS-SECTION     
+
+                                             +    CALCULATED VALUE
+                                             *    EXPERIMENTAL VALUE
+
+           1               1               1               1               1               1               1           
+       ....*...............*...............*...............*...............*...............*...............*...........
+ *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *-
+ *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *-
+  31.30.   .               .               .               .               *               .               .          .
+  33.60.   .               .               .               .             * .               .               .          .
+  35.10.   .               .               .               .            *  .               .               .          .
+  37.00.   .               .               .               .           *   .               .               .          .
+  38.10.   .               .               .               .          *    .               .               .          .
+  40.30.   .               .               .               .        *      .               .               .          .
+  42.60.   .               .               .               .       *       .               .               .          .
+  42.90.   .               .               .               .      *+       .               .               .          .
+  44.10.   .               .               .               .      *        .               .               .          .
+  45.60.   .               .               .               .     *         .               .               .          .
+  47.50.   .               .               .               .    *          .               .               .          .
+  49.00.   .               .               .               .    *          .               .               .          .
+  50.60.   .               .               .               .   *           .               .               .          .
+  52.10.   .               .               .               .  *            .               .               .          .
+  54.00.   .               .               .               . *             .               .               .          .
+  56.20.   .               .               .               .*              .               .               .          .
+  58.40.   .               .               .               *               .               .               .          .
+  59.50.   .               .               .              *.               .               .               .          .
+  61.40.   .               .               .             * .               .               .               .          .
+  62.10.   .               .               .            *  .               .               .               .          .
+  63.10.   .               .               .           *+  .               .               .               .          .
+  65.00.   .               .               .          *    .               .               .               .          .
+  66.10.   .               .               .         *+    .               .               .               .          .
+  67.90.   .               .               .        *      .               .               .               .          .
+  69.00.   .               .               .       *       .               .               .               .          .
+  70.10.   .               .               .      *        .               .               .               .          .
+  71.90.   .               .               .     *         .               .               .               .          .
+  72.60.   .               .               .    *          .               .               .               .          .
+  74.10.   .               .               .   *           .               .               .               .          .
+  75.90.   .               .               .  *            .               .               .               .          .
+  77.00.   .               .               . *             .               .               .               .          .
+  78.10.   .               .               .*              .               .               .               .          .
+  79.60.   .               .              *+               .               .               .               .          .
+  81.10.   .               .             *+.               .               .               .               .          .
+  83.30.   .               .           *+  .               .               .               .               .          .
+  84.40.   .               .          *+   .               .               .               .               .          .
+  85.90.   .               .         *+    .               .               .               .               .          .
+  88.10.   .               .      * +      .               .               .               .               .          .
+  90.00.   .               .     * +       .               .               .               .               .          .
+  92.20.   .               .   * +         .               .               .               .               .          .
+  95.20.   .               .*  +           .               .               .               .               .          .
+  99.00.   .             * .+              .               .               .               .               .          .
+ 103.90.   .         *  +  .               .               .               .               .               .          .
+ 107.60.   .    *    +     .               .               .               .               .               .          .
+ 111.00.   .     *  +      .               .               .               .               .               .          .
+ 115.10.   . *   +         .               .               .               .               .               .          .
+       ....*...............*...............*...............*...............*...............*...............*...........
+
+ ************ CHI2 **********    0.3676938610D+03
+
+
+1     208Pb + 7Li = 208Pb + 7Li E = 39.0 MeV                                  
+
+
+ TOTAL REACTION CROSS SECTION =   1191.643555 MILLIBARNS
+
+ ELASTIC SCATTERING ON THE TARGET STATE OF SPIN =  0.0+
+
+     ANGLE    CROSS-SECTION      C. S./RUTHER.  
+      1.000     0.94999E+10           1.0000127
+      2.000     0.59380E+09           0.9999565
+      3.000     0.11733E+09           0.9999665
+      4.000     0.37138E+08           1.0000189
+      5.000     0.15219E+08           1.0000276
+      6.000     0.73434E+07           1.0000310
+      7.000     0.39651E+07           0.9997181
+      8.000     0.23267E+07           0.9999716
+      9.000     0.14541E+07           1.0001891
+     10.000     0.95474E+06           0.9999703
+     11.000     0.65262E+06           0.9997051
+     12.000     0.46171E+06           1.0005305
+     13.000     0.33538E+06           0.9997534
+     14.000     0.24960E+06           0.9994140
+     15.000     0.18995E+06           1.0008158
+     16.000     0.14688E+06           1.0002564
+     17.000     0.11538E+06           0.9996925
+     18.000     0.91853E+05           0.9984826
+     19.000     0.74272E+05           1.0004145
+     20.000     0.60727E+05           1.0022696
+     21.000     0.49972E+05           1.0004133
+     22.000     0.41518E+05           0.9989530
+     23.000     0.34811E+05           0.9983008
+     24.000     0.29416E+05           0.9977390
+     25.000     0.25103E+05           0.9999650
+     26.000     0.21584E+05           1.0032550
+     27.000     0.18609E+05           1.0031716
+     28.000     0.16099E+05           1.0009465
+     29.000     0.14016E+05           0.9998474
+     30.000     0.12264E+05           0.9989349
+     31.000     0.10769E+05           0.9970299
+     32.000     0.95118E+04           0.9966239
+     33.000     0.84605E+04           0.9992620
+     34.000     0.75545E+04           1.0020001
+     35.000     0.67498E+04           1.0017864
+     36.000     0.60399E+04           0.9997193
+     37.000     0.54253E+04           0.9982746
+     38.000     0.48892E+04           0.9970554
+     39.000     0.44111E+04           0.9941479
+     40.000     0.39869E+04           0.9902926
+     41.000     0.36221E+04           0.9889677
+     42.000     0.33145E+04           0.9923253
+     43.000     0.30503E+04           0.9989924
+     44.000     0.28159E+04           1.0065522
+     45.000     0.26070E+04           1.0148698
+     46.000     0.24244E+04           1.0257518
+     47.000     0.22657E+04           1.0397235
+     48.000     0.21223E+04           1.0543391
+     49.000     0.19860E+04           1.0661300
+     50.000     0.18542E+04           1.0736773
+     51.000     0.17292E+04           1.0781773
+     52.000     0.16128E+04           1.0810823
+     53.000     0.15035E+04           1.0817310
+     54.000     0.13975E+04           1.0776115
+     55.000     0.12928E+04           1.0668002
+     56.000     0.11906E+04           1.0498366
+     57.000     0.10937E+04           1.0291142
+     58.000     0.10038E+04           1.0065630
+     59.000     0.92013E+03           0.9820269
+     60.000     0.84078E+03           0.9538467
+     61.000     0.76457E+03           0.9208994
+     62.000     0.69215E+03           0.8840462
+     63.000     0.62509E+03           0.8456772
+     64.000     0.56442E+03           0.8079031
+     65.000     0.50972E+03           0.7711059
+     66.000     0.45961E+03           0.7340839
+     67.000     0.41289E+03           0.6955265
+     68.000     0.36929E+03           0.6554455
+     69.000     0.32938E+03           0.6153629
+     70.000     0.29380E+03           0.5772076
+     71.000     0.26255E+03           0.5419358
+     72.000     0.23493E+03           0.5090077
+     73.000     0.20994E+03           0.4770588
+     74.000     0.18695E+03           0.4451299
+     75.000     0.16585E+03           0.4134580
+     76.000     0.14697E+03           0.3832692
+     77.000     0.13053E+03           0.3558277
+     78.000     0.11644E+03           0.3315193
+     79.000     0.10421E+03           0.3096363
+     80.000     0.93248E+02           0.2889532
+     81.000     0.83181E+02           0.2686076
+     82.000     0.73940E+02           0.2486381
+     83.000     0.65683E+02           0.2298409
+     84.000     0.58565E+02           0.2131090
+     85.000     0.52561E+02           0.1987544
+     86.000     0.47435E+02           0.1862714
+     87.000     0.42858E+02           0.1746640
+     88.000     0.38582E+02           0.1630739
+     89.000     0.34530E+02           0.1512728
+     90.000     0.30787E+02           0.1397108
+     91.000     0.27486E+02           0.1291231
+     92.000     0.24687E+02           0.1199848
+     93.000     0.22322E+02           0.1121783
+     94.000     0.20233E+02           0.1050716
+     95.000     0.18258E+02           0.0979274
+     96.000     0.16321E+02           0.0903571
+     97.000     0.14449E+02           0.0825265
+     98.000     0.12737E+02           0.0750048
+     99.000     0.11268E+02           0.0683815
+    100.000     0.10064E+02           0.0629099
+    101.000     0.90742E+01           0.0583917
+    102.000     0.82074E+01           0.0543420
+    103.000     0.73876E+01           0.0503034
+    104.000     0.65871E+01           0.0461044
+    105.000     0.58301E+01           0.0419241
+    106.000     0.51666E+01           0.0381524
+    107.000     0.46376E+01           0.0351499
+    108.000     0.42497E+01           0.0330449
+    109.000     0.39710E+01           0.0316638
+    110.000     0.37461E+01           0.0306165
+    111.000     0.35211E+01           0.0294826
+    112.000     0.32659E+01           0.0280035
+    113.000     0.29838E+01           0.0261885
+    114.000     0.27036E+01           0.0242785
+    115.000     0.24596E+01           0.0225889
+    116.000     0.22703E+01           0.0213151
+    117.000     0.21278E+01           0.0204130
+    118.000     0.20028E+01           0.0196250
+    119.000     0.18625E+01           0.0186335
+    120.000     0.16892E+01           0.0172472
+    121.000     0.14887E+01           0.0155068
+    122.000     0.12855E+01           0.0136547
+    123.000     0.11086E+01           0.0120025
+    124.000     0.97741E+00           0.0107829
+    125.000     0.89574E+00           0.0100651
+    126.000     0.85300E+00           0.0097587
+    127.000     0.83111E+00           0.0096771
+    128.000     0.81176E+00           0.0096158
+    129.000     0.78204E+00           0.0094211
+    130.000     0.73795E+00           0.0090375
+    131.000     0.68502E+00           0.0085254
+    132.000     0.63533E+00           0.0080323
+    133.000     0.60087E+00           0.0077141
+    134.000     0.58595E+00           0.0076363
+    135.000     0.58338E+00           0.0077149
+    136.000     0.57745E+00           0.0077463
+    137.000     0.55261E+00           0.0075170
+    138.000     0.50234E+00           0.0069267
+    139.000     0.43260E+00           0.0060445
+    140.000     0.35800E+00           0.0050670
+    141.000     0.29420E+00           0.0042164
+    142.000     0.25163E+00           0.0036505
+    143.000     0.23372E+00           0.0034311
+    144.000     0.23836E+00           0.0035397
+    145.000     0.25961E+00           0.0038987
+    146.000     0.28830E+00           0.0043767
+    147.000     0.31273E+00           0.0047977
+    148.000     0.32182E+00           0.0049877
+    149.000     0.31009E+00           0.0048533
+    150.000     0.28113E+00           0.0044423
+    151.000     0.24609E+00           0.0039244
+    152.000     0.21705E+00           0.0034922
+    153.000     0.20004E+00           0.0032461
+    154.000     0.19268E+00           0.0031525
+    155.000     0.18802E+00           0.0031007
+    156.000     0.18087E+00           0.0030054
+    157.000     0.17105E+00           0.0028630
+    158.000     0.16155E+00           0.0027228
+    159.000     0.15423E+00           0.0026167
+    160.000     0.14820E+00           0.0025303
+    161.000     0.14247E+00           0.0024471
+    162.000     0.13966E+00           0.0024126
+    163.000     0.14572E+00           0.0025308
+    164.000     0.16438E+00           0.0028693
+    165.000     0.19092E+00           0.0033485
+    166.000     0.21195E+00           0.0037338
+    167.000     0.21306E+00           0.0037690
+    168.000     0.18919E+00           0.0033595
+    169.000     0.14881E+00           0.0026518
+    170.000     0.10806E+00           0.0019318
+    171.000     0.79476E-01           0.0014249
+    172.000     0.65428E-01           0.0011761
+    173.000     0.62138E-01           0.0011195
+    174.000     0.70357E-01           0.0012701
+    175.000     0.10148E+00           0.0018350
+    176.000     0.17087E+00           0.0030940
+    177.000     0.28163E+00           0.0051051
+    178.000     0.41204E+00           0.0074747
+    179.000     0.51943E+00           0.0094272
+1
+                                             +       C. S./RUTHER.    
+
+           1               1               1               1               1               1               1           
+       ....*...............*...............*...............*...............*...............*...............*...........
+   1.00.   .               .               .               .               .               .               +          .
+   2.00.   .               .               .               .               .               .               +          .
+   3.00.   .               .               .               .               .               .               +          .
+   4.00.   .               .               .               .               .               .               +          .
+   5.00.   .               .               .               .               .               .               +          .
+   6.00.   .               .               .               .               .               .               +          .
+   7.00.   .               .               .               .               .               .               +          .
+   8.00.   .               .               .               .               .               .               +          .
+   9.00.   .               .               .               .               .               .               +          .
+  10.00.   .               .               .               .               .               .               +          .
+  11.00.   .               .               .               .               .               .               +          .
+  12.00.   .               .               .               .               .               .               +          .
+  13.00.   .               .               .               .               .               .               +          .
+  14.00.   .               .               .               .               .               .               +          .
+  15.00.   .               .               .               .               .               .               +          .
+  16.00.   .               .               .               .               .               .               +          .
+  17.00.   .               .               .               .               .               .               +          .
+  18.00.   .               .               .               .               .               .               +          .
+  19.00.   .               .               .               .               .               .               +          .
+  20.00.   .               .               .               .               .               .               +          .
+  21.00.   .               .               .               .               .               .               +          .
+  22.00.   .               .               .               .               .               .               +          .
+  23.00.   .               .               .               .               .               .               +          .
+  24.00.   .               .               .               .               .               .               +          .
+  25.00.   .               .               .               .               .               .               +          .
+  26.00.   .               .               .               .               .               .               +          .
+  27.00.   .               .               .               .               .               .               +          .
+  28.00.   .               .               .               .               .               .               +          .
+  29.00.   .               .               .               .               .               .               +          .
+  30.00.   .               .               .               .               .               .               +          .
+  31.00.   .               .               .               .               .               .               +          .
+  32.00.   .               .               .               .               .               .               +          .
+  33.00.   .               .               .               .               .               .               +          .
+  34.00.   .               .               .               .               .               .               +          .
+  35.00.   .               .               .               .               .               .               +          .
+  36.00.   .               .               .               .               .               .               +          .
+  37.00.   .               .               .               .               .               .               +          .
+  38.00.   .               .               .               .               .               .               +          .
+  39.00.   .               .               .               .               .               .               +          .
+  40.00.   .               .               .               .               .               .               +          .
+  41.00.   .               .               .               .               .               .               +          .
+  42.00.   .               .               .               .               .               .               +          .
+  43.00.   .               .               .               .               .               .               +          .
+  44.00.   .               .               .               .               .               .               +          .
+  45.00.   .               .               .               .               .               .               +          .
+  46.00.   .               .               .               .               .               .               +          .
+  47.00.   .               .               .               .               .               .               +          .
+  48.00.   .               .               .               .               .               .               +          .
+  49.00.   .               .               .               .               .               .               +          .
+  50.00.   .               .               .               .               .               .               +          .
+  51.00.   .               .               .               .               .               .               .+         .
+  52.00.   .               .               .               .               .               .               .+         .
+  53.00.   .               .               .               .               .               .               .+         .
+  54.00.   .               .               .               .               .               .               .+         .
+  55.00.   .               .               .               .               .               .               +          .
+  56.00.   .               .               .               .               .               .               +          .
+  57.00.   .               .               .               .               .               .               +          .
+  58.00.   .               .               .               .               .               .               +          .
+  59.00.   .               .               .               .               .               .               +          .
+  60.00.   .               .               .               .               .               .               +          .
+  61.00.   .               .               .               .               .               .              +.          .
+  62.00.   .               .               .               .               .               .              +.          .
+  63.00.   .               .               .               .               .               .              +.          .
+  64.00.   .               .               .               .               .               .              +.          .
+  65.00.   .               .               .               .               .               .             + .          .
+  66.00.   .               .               .               .               .               .             + .          .
+  67.00.   .               .               .               .               .               .            +  .          .
+  68.00.   .               .               .               .               .               .            +  .          .
+  69.00.   .               .               .               .               .               .            +  .          .
+  70.00.   .               .               .               .               .               .           +   .          .
+  71.00.   .               .               .               .               .               .           +   .          .
+  72.00.   .               .               .               .               .               .          +    .          .
+  73.00.   .               .               .               .               .               .          +    .          .
+  74.00.   .               .               .               .               .               .         +     .          .
+  75.00.   .               .               .               .               .               .         +     .          .
+  76.00.   .               .               .               .               .               .        +      .          .
+  77.00.   .               .               .               .               .               .        +      .          .
+  78.00.   .               .               .               .               .               .       +       .          .
+  79.00.   .               .               .               .               .               .       +       .          .
+  80.00.   .               .               .               .               .               .      +        .          .
+  81.00.   .               .               .               .               .               .      +        .          .
+  82.00.   .               .               .               .               .               .     +         .          .
+  83.00.   .               .               .               .               .               .     +         .          .
+  84.00.   .               .               .               .               .               .    +          .          .
+  85.00.   .               .               .               .               .               .    +          .          .
+  86.00.   .               .               .               .               .               .   +           .          .
+  87.00.   .               .               .               .               .               .   +           .          .
+  88.00.   .               .               .               .               .               .  +            .          .
+  89.00.   .               .               .               .               .               .  +            .          .
+  90.00.   .               .               .               .               .               . +             .          .
+  91.00.   .               .               .               .               .               . +             .          .
+  92.00.   .               .               .               .               .               .+              .          .
+  93.00.   .               .               .               .               .               .+              .          .
+  94.00.   .               .               .               .               .               +               .          .
+  95.00.   .               .               .               .               .               +               .          .
+  96.00.   .               .               .               .               .              +.               .          .
+  97.00.   .               .               .               .               .              +.               .          .
+  98.00.   .               .               .               .               .             + .               .          .
+  99.00.   .               .               .               .               .            +  .               .          .
+ 100.00.   .               .               .               .               .            +  .               .          .
+ 101.00.   .               .               .               .               .           +   .               .          .
+ 102.00.   .               .               .               .               .           +   .               .          .
+ 103.00.   .               .               .               .               .          +    .               .          .
+ 104.00.   .               .               .               .               .          +    .               .          .
+ 105.00.   .               .               .               .               .         +     .               .          .
+ 106.00.   .               .               .               .               .        +      .               .          .
+ 107.00.   .               .               .               .               .        +      .               .          .
+ 108.00.   .               .               .               .               .       +       .               .          .
+ 109.00.   .               .               .               .               .       +       .               .          .
+ 110.00.   .               .               .               .               .       +       .               .          .
+ 111.00.   .               .               .               .               .       +       .               .          .
+ 112.00.   .               .               .               .               .      +        .               .          .
+ 113.00.   .               .               .               .               .      +        .               .          .
+ 114.00.   .               .               .               .               .     +         .               .          .
+ 115.00.   .               .               .               .               .     +         .               .          .
+ 116.00.   .               .               .               .               .    +          .               .          .
+ 117.00.   .               .               .               .               .    +          .               .          .
+ 118.00.   .               .               .               .               .    +          .               .          .
+ 119.00.   .               .               .               .               .   +           .               .          .
+ 120.00.   .               .               .               .               .   +           .               .          .
+ 121.00.   .               .               .               .               .  +            .               .          .
+ 122.00.   .               .               .               .               . +             .               .          .
+ 123.00.   .               .               .               .               .+              .               .          .
+ 124.00.   .               .               .               .               .+              .               .          .
+ 125.00.   .               .               .               .               +               .               .          .
+ 126.00.   .               .               .               .               +               .               .          .
+ 127.00.   .               .               .               .               +               .               .          .
+ 128.00.   .               .               .               .               +               .               .          .
+ 129.00.   .               .               .               .               +               .               .          .
+ 130.00.   .               .               .               .              +.               .               .          .
+ 131.00.   .               .               .               .              +.               .               .          .
+ 132.00.   .               .               .               .             + .               .               .          .
+ 133.00.   .               .               .               .             + .               .               .          .
+ 134.00.   .               .               .               .             + .               .               .          .
+ 135.00.   .               .               .               .             + .               .               .          .
+ 136.00.   .               .               .               .             + .               .               .          .
+ 137.00.   .               .               .               .             + .               .               .          .
+ 138.00.   .               .               .               .            +  .               .               .          .
+ 139.00.   .               .               .               .            +  .               .               .          .
+ 140.00.   .               .               .               .          +    .               .               .          .
+ 141.00.   .               .               .               .         +     .               .               .          .
+ 142.00.   .               .               .               .        +      .               .               .          .
+ 143.00.   .               .               .               .        +      .               .               .          .
+ 144.00.   .               .               .               .        +      .               .               .          .
+ 145.00.   .               .               .               .        +      .               .               .          .
+ 146.00.   .               .               .               .         +     .               .               .          .
+ 147.00.   .               .               .               .          +    .               .               .          .
+ 148.00.   .               .               .               .          +    .               .               .          .
+ 149.00.   .               .               .               .          +    .               .               .          .
+ 150.00.   .               .               .               .         +     .               .               .          .
+ 151.00.   .               .               .               .         +     .               .               .          .
+ 152.00.   .               .               .               .        +      .               .               .          .
+ 153.00.   .               .               .               .       +       .               .               .          .
+ 154.00.   .               .               .               .       +       .               .               .          .
+ 155.00.   .               .               .               .       +       .               .               .          .
+ 156.00.   .               .               .               .       +       .               .               .          .
+ 157.00.   .               .               .               .      +        .               .               .          .
+ 158.00.   .               .               .               .      +        .               .               .          .
+ 159.00.   .               .               .               .      +        .               .               .          .
+ 160.00.   .               .               .               .     +         .               .               .          .
+ 161.00.   .               .               .               .     +         .               .               .          .
+ 162.00.   .               .               .               .     +         .               .               .          .
+ 163.00.   .               .               .               .     +         .               .               .          .
+ 164.00.   .               .               .               .      +        .               .               .          .
+ 165.00.   .               .               .               .       +       .               .               .          .
+ 166.00.   .               .               .               .        +      .               .               .          .
+ 167.00.   .               .               .               .        +      .               .               .          .
+ 168.00.   .               .               .               .       +       .               .               .          .
+ 169.00.   .               .               .               .      +        .               .               .          .
+ 170.00.   .               .               .               .    +          .               .               .          .
+ 171.00.   .               .               .               . +             .               .               .          .
+ 172.00.   .               .               .               .+              .               .               .          .
+ 173.00.   .               .               .               .+              .               .               .          .
+ 174.00.   .               .               .               . +             .               .               .          .
+ 175.00.   .               .               .               .   +           .               .               .          .
+ 176.00.   .               .               .               .       +       .               .               .          .
+ 177.00.   .               .               .               .          +    .               .               .          .
+ 178.00.   .               .               .               .             + .               .               .          .
+ 179.00.   .               .               .               .               +               .               .          .
+       ....*...............*...............*...............*...............*...............*...............*...........
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+ RUN   1   MAX =  20   ***** CHI2 =  0.3676938610D+03 *****     W(1) =     20.00     W(2) = 1.00     W(3) =   0.00000
+
+                     WEIGHT            EXP. NORM.          ERR. NORM.          CALC. NORM.            CHI2
+         1        1.000000E+00        1.000000E+00        0.000000E+00        1.000000E+00        3.676938E+02
+
+ *** VARIABLES
+
+   1    1.797000E+02   2    7.336297E+00
+
+ *** FUNCTIONS
+
+   1    1.195293E-01   2    4.329408E-02   3    9.854127E-02   4   -4.573236E-02   5    1.635325E-01   6    3.961150E-01
+   7    6.111088E-01   8    5.328133E-01   9    3.548654E-01  10    4.202195E-01  11    3.284743E-01  12    2.618286E-01
+  13    2.736301E-01  14    1.340423E-01  15    9.964090E-02  16    7.690892E-02  17    1.345736E-01  18    1.758194E-01
+  19   -1.293071E-02  20   -2.723474E-02  21    5.696688E-01  22    2.486690E-01  23    4.136491E-01  24    1.898308E-01
+  25    3.057214E-01  26    3.150282E-01  27    8.446906E-02  28    6.281725E-01  29    5.530236E-01  30    2.245089E-01
+  31    3.850117E-01  32    7.045674E-01  33    9.045476E-01  34    1.041085E+00  35    1.096925E+00  36    1.678453E+00
+  37    1.842728E+00  38    3.138206E+00  39    3.408815E+00  40    3.895519E+00  41    5.527563E+00  42    4.837924E+00
+  43    6.014622E+00  44    1.107545E+01  45    5.488036E+00  46    8.667048E+00
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+ RUN   2   MAX =  20   ***** CHI2 =  0.3650201345D+03 *****     W(1) =     20.00     W(2) = 1.00     W(3) = 179.70000
+
+                     WEIGHT            EXP. NORM.          ERR. NORM.          CALC. NORM.            CHI2
+         1        1.000000E+00        1.000000E+00        0.000000E+00        1.000000E+00        3.650201E+02
+
+ *** VARIABLES
+
+   1    1.799000E+02   2    7.336297E+00
+
+ *** FUNCTIONS
+
+   1    1.195236E-01   2    4.336543E-02   3    9.860703E-02   4   -4.579238E-02   5    1.634012E-01   6    3.958626E-01
+   7    6.109551E-01   8    5.326979E-01   9    3.549215E-01  10    4.205051E-01  11    3.290757E-01  12    2.626467E-01
+  13    2.745632E-01  14    1.349784E-01  15    1.005204E-01  16    7.753515E-02  17    1.347918E-01  18    1.758201E-01
+  19   -1.336607E-02  20   -2.786460E-02  21    5.686804E-01  22    2.471221E-01  23    4.117498E-01  24    1.873972E-01
+  25    3.028454E-01  26    3.117186E-01  27    8.060650E-02  28    6.238707E-01  29    5.482420E-01  30    2.191733E-01
+  31    3.791410E-01  32    6.981080E-01  33    8.975172E-01  34    1.033522E+00  35    1.088468E+00  36    1.669103E+00
+  37    1.832798E+00  38    3.126635E+00  39    3.396143E+00  40    3.881134E+00  41    5.510259E+00  42    4.818252E+00
+  43    5.990714E+00  44    1.104042E+01  45    5.463629E+00  46    8.635556E+00
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+ RUN   3   MAX =  20   ***** CHI2 =  0.4039848114D+02 *****     W(1) =     20.00     W(2) = 1.00     W(3) =   7.33630
+
+                     WEIGHT            EXP. NORM.          ERR. NORM.          CALC. NORM.            CHI2
+         1        1.000000E+00        1.000000E+00        0.000000E+00        1.000000E+00        4.039848E+01
+
+ *** VARIABLES
+
+   1    1.797000E+02   2    7.536296E+00
+
+ *** FUNCTIONS
+
+   1    1.207722E-01   2    6.494763E-02   3    1.153958E-01   4   -6.545173E-02   5    1.239231E-01   6    3.286370E-01
+   7    5.772867E-01   8    5.097710E-01   9    3.785673E-01  10    5.043024E-01  11    4.903890E-01  12    4.727306E-01
+  13    5.061450E-01  14    3.595635E-01  15    3.009102E-01  16    2.059412E-01  17    1.560935E-01  18    1.416884E-01
+  19   -1.543010E-01  20   -2.156304E-01  21    2.933513E-01  22   -1.575219E-01  23   -7.451556E-02  24   -4.178803E-01
+  25   -4.013775E-01  26   -4.879808E-01  27   -8.364621E-01  28   -3.915973E-01  29   -5.667130E-01  30   -1.007109E+00
+  31   -9.593306E-01  32   -7.638693E-01  33   -6.796502E-01  34   -6.483111E-01  35   -7.676916E-01  36   -3.707392E-01
+  37   -3.185093E-01  38    6.449901E-01  39    7.044185E-01  40    8.587431E-01  41    1.921630E+00  42    8.185865E-01
+  43    1.230162E+00  44    4.178649E+00  45    7.035414E-01  46    2.564379E+00
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+ RUN   4   MAX =  20   ***** CHI2 =  0.4037777796D+02 *****     W(1) =     40.00     W(2) = 1.00     W(3) =   0.00202
+
+                     WEIGHT            EXP. NORM.          ERR. NORM.          CALC. NORM.            CHI2
+         1        1.000000E+00        1.000000E+00        0.000000E+00        1.000000E+00        4.037778E+01
+
+ *** VARIABLES
+
+   1    1.801000E+02   2    7.534437E+00
+
+ *** FUNCTIONS
+
+   1    1.207732E-01   2    6.495631E-02   3    1.154024E-01   4   -6.545800E-02   5    1.239098E-01   6    3.286154E-01
+   7    5.772752E-01   8    5.097635E-01   9    3.785737E-01  10    5.043279E-01  11    4.904361E-01  12    4.727886E-01
+  13    5.062078E-01  14    3.596214E-01  15    3.009561E-01  16    2.059633E-01  17    1.560833E-01  18    1.416616E-01
+  19   -1.543583E-01  20   -2.156997E-01  21    2.932574E-01  22   -1.576476E-01  23   -7.466300E-02  24   -4.180560E-01
+  25   -4.015761E-01  26   -4.882007E-01  27   -8.367070E-01  28   -3.918668E-01  29   -5.670041E-01  30   -1.007421E+00
+  31   -9.596644E-01  32   -7.642297E-01  33   -6.800341E-01  34   -6.487169E-01  35   -7.681301E-01  36   -3.712146E-01
+  37   -3.190042E-01  38    6.444262E-01  39    7.038187E-01  40    8.580933E-01  41    1.920883E+00  42    8.177978E-01
+  43    1.229251E+00  44    4.177367E+00  45    7.026469E-01  46    2.563285E+00
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+ RUN   5   MAX =  20   ***** CHI2 =  0.4037515676D+02 *****     W(1) =     80.00     W(2) = 1.00     W(3) =   0.00017
+
+                     WEIGHT            EXP. NORM.          ERR. NORM.          CALC. NORM.            CHI2
+         1        1.000000E+00        1.000000E+00        0.000000E+00        1.000000E+00        4.037516E+01
+
+ *** VARIABLES
+
+   1    1.793000E+02   2    7.538245E+00
+
+ *** FUNCTIONS
+
+   1    1.207732E-01   2    6.495135E-02   3    1.153980E-01   4   -6.545800E-02   5    1.239139E-01   6    3.286239E-01
+   7    5.772818E-01   8    5.097693E-01   9    3.785755E-01  10    5.043228E-01  11    4.904246E-01  12    4.727760E-01
+  13    5.061944E-01  14    3.596106E-01  15    3.009526E-01  16    2.059696E-01  17    1.560999E-01  18    1.416842E-01
+  19   -1.543259E-01  20   -2.156650E-01  21    2.932991E-01  22   -1.575998E-01  23   -7.460919E-02  24   -4.179977E-01
+  25   -4.015141E-01  26   -4.881379E-01  27   -8.366429E-01  28   -3.917981E-01  29   -5.669335E-01  30   -1.007351E+00
+  31   -9.595952E-01  32   -7.641594E-01  33   -6.799633E-01  34   -6.486452E-01  35   -7.680613E-01  36   -3.711462E-01
+  37   -3.189401E-01  38    6.444938E-01  39    7.038777E-01  40    8.581283E-01  41    1.920893E+00  42    8.177614E-01
+  43    1.229187E+00  44    4.177277E+00  45    7.025944E-01  46    2.563161E+00
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+ RUN   6   MAX =  20   ***** CHI2 =  0.4039156536D+02 *****     W(1) =    160.00     W(2) = 1.00     W(3) =   0.00018
+
+                     WEIGHT            EXP. NORM.          ERR. NORM.          CALC. NORM.            CHI2
+         1        1.000000E+00        1.000000E+00        0.000000E+00        1.000000E+00        4.039156E+01
+
+ *** VARIABLES
+
+   1    1.777000E+02   2    7.545869E+00
+
+ *** FUNCTIONS
+
+   1    1.207732E-01   2    6.493460E-02   3    1.153832E-01   4   -6.545352E-02   5    1.239323E-01   6    3.286593E-01
+   7    5.773040E-01   8    5.097869E-01   9    3.785728E-01  10    5.042922E-01  11    4.903637E-01  12    4.726990E-01
+  13    5.061139E-01  14    3.595380E-01  15    3.009005E-01  16    2.059559E-01  17    1.561344E-01  18    1.417442E-01
+  19   -1.542231E-01  20   -2.155442E-01  21    2.934534E-01  22   -1.574034E-01  23   -7.438489E-02  24   -4.177380E-01
+  25   -4.012267E-01  26   -4.878258E-01  27   -8.363047E-01  28   -3.914290E-01  29   -5.665404E-01  30   -1.006940E+00
+  31   -9.591612E-01  32   -7.636970E-01  33   -6.794752E-01  34   -6.481329E-01  35   -7.675194E-01  36   -3.705675E-01
+  37   -3.183471E-01  38    6.451622E-01  39    7.045730E-01  40    8.588428E-01  41    1.921668E+00  42    8.185011E-01
+  43    1.229990E+00  44    4.178385E+00  45    7.033747E-01  46    2.564047E+00
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+ RUN   7   MAX =  20   ***** CHI2 =  0.4036895361D+02 *****     W(1) =     80.00     W(2) = 1.00     W(3) =   0.00011
+
+                     WEIGHT            EXP. NORM.          ERR. NORM.          CALC. NORM.            CHI2
+         1        1.000000E+00        1.000000E+00        0.000000E+00        1.000000E+00        4.036895E+01
+
+ *** VARIABLES
+
+   1    1.785000E+02   2    7.542076E+00
+
+ *** FUNCTIONS
+
+   1    1.207741E-01   2    6.494701E-02   3    1.153928E-01   4   -6.545980E-02   5    1.239149E-01   6    3.286298E-01
+   7    5.772884E-01   8    5.097752E-01   9    3.785791E-01  10    5.043238E-01  11    4.904223E-01  12    4.727728E-01
+  13    5.061916E-01  14    3.596098E-01  15    3.009561E-01  16    2.059790E-01  17    1.561152E-01  18    1.417033E-01
+  19   -1.543027E-01  20   -2.156393E-01  21    2.933273E-01  22   -1.575703E-01  23   -7.457775E-02  24   -4.179661E-01
+  25   -4.014835E-01  26   -4.881075E-01  27   -8.366156E-01  28   -3.917693E-01  29   -5.669065E-01  30   -1.007330E+00
+  31   -9.595776E-01  32   -7.641445E-01  33   -6.799505E-01  34   -6.486329E-01  35   -7.680560E-01  36   -3.711470E-01
+  37   -3.189477E-01  38    6.444806E-01  39    7.038528E-01  40    8.580735E-01  41    1.920798E+00  42    8.176044E-01
+  43    1.228973E+00  44    4.176960E+00  45    7.023794E-01  46    2.562836E+00
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+ RUN   8   MAX =  20   ***** CHI2 =  0.4038461286D+02 *****     W(1) =    160.00     W(2) = 1.00     W(3) =   0.00020
+
+                     WEIGHT            EXP. NORM.          ERR. NORM.          CALC. NORM.            CHI2
+         1        1.000000E+00        1.000000E+00        0.000000E+00        1.000000E+00        4.038461E+01
+
+ *** VARIABLES
+
+   1    1.769000E+02   2    7.549736E+00
+
+ *** FUNCTIONS
+
+   1    1.207741E-01   2    6.493088E-02   3    1.153788E-01   4   -6.545442E-02   5    1.239344E-01   6    3.286659E-01
+   7    5.773097E-01   8    5.097919E-01   9    3.785755E-01  10    5.042912E-01  11    4.903591E-01  12    4.726946E-01
+  13    5.061090E-01  14    3.595357E-01  15    3.009041E-01  16    2.059654E-01  17    1.561503E-01  18    1.417647E-01
+  19   -1.541974E-01  20   -2.155176E-01  21    2.934837E-01  22   -1.573715E-01  23   -7.434995E-02  24   -4.177022E-01
+  25   -4.011923E-01  26   -4.877922E-01  27   -8.362736E-01  28   -3.913965E-01  29   -5.665090E-01  30   -1.006915E+00
+  31   -9.591393E-01  32   -7.636786E-01  33   -6.794590E-01  34   -6.481186E-01  35   -7.675134E-01  36   -3.705683E-01
+  37   -3.183556E-01  38    6.451438E-01  39    7.045389E-01  40    8.587728E-01  41    1.921551E+00  42    8.183165E-01
+  43    1.229744E+00  44    4.178033E+00  45    7.031429E-01  46    2.563701E+00
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+ RUN   9   MAX =  20   ***** CHI2 =  0.4036844629D+02 *****     W(1) =     80.00     W(2) = 1.00     W(3) =   0.00010
+
+                     WEIGHT            EXP. NORM.          ERR. NORM.          CALC. NORM.            CHI2
+         1        1.000000E+00        1.000000E+00        0.000000E+00        1.000000E+00        4.036845E+01
+
+ *** VARIABLES
+
+   1    1.777000E+02   2    7.545914E+00
+
+ *** FUNCTIONS
+
+   1    1.207741E-01   2    6.494143E-02   3    1.153876E-01   4   -6.545980E-02   5    1.239200E-01   6    3.286410E-01
+   7    5.772966E-01   8    5.097827E-01   9    3.785818E-01  10    5.043177E-01  11    4.904085E-01  12    4.727552E-01
+  13    5.061732E-01  14    3.595936E-01  15    3.009473E-01  16    2.059822E-01  17    1.561312E-01  18    1.417266E-01
+  19   -1.542671E-01  20   -2.156002E-01  21    2.933742E-01  22   -1.575139E-01  23   -7.451416E-02  24   -4.178945E-01
+  25   -4.014072E-01  26   -4.880273E-01  27   -8.365321E-01  28   -3.916793E-01  29   -5.668114E-01  30   -1.007235E+00
+  31   -9.594799E-01  32   -7.640424E-01  33   -6.798438E-01  34   -6.485222E-01  35   -7.679439E-01  36   -3.710310E-01
+  37   -3.188327E-01  38    6.446067E-01  39    7.039749E-01  40    8.581777E-01  41    1.920888E+00  42    8.176446E-01
+  43    1.228992E+00  44    4.176980E+00  45    7.024150E-01  46    2.562845E+00
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+ RUN  10   MAX =  20   ***** CHI2 =  0.4039469887D+02 *****     W(1) =    160.00     W(2) = 1.00     W(3) =   0.00020
+
+                     WEIGHT            EXP. NORM.          ERR. NORM.          CALC. NORM.            CHI2
+         1        1.000000E+00        1.000000E+00        0.000000E+00        1.000000E+00        4.039470E+01
+
+ *** VARIABLES
+
+   1    1.761000E+02   2    7.553589E+00
+
+ *** FUNCTIONS
+
+   1    1.207732E-01   2    6.492219E-02   3    1.153714E-01   4   -6.545173E-02   5    1.239446E-01   6    3.286849E-01
+   7    5.773204E-01   8    5.098003E-01   9    3.785728E-01  10    5.042728E-01  11    4.903235E-01  12    4.726505E-01
+  13    5.060624E-01  14    3.594940E-01  15    3.008741E-01  16    2.059559E-01  17    1.561688E-01  18    1.417971E-01
+  19   -1.541393E-01  20   -2.154500E-01  21    2.935691E-01  22   -1.572617E-01  23   -7.422417E-02  24   -4.175556E-01
+  25   -4.010290E-01  26   -4.876156E-01  27   -8.360813E-01  28   -3.911869E-01  29   -5.662859E-01  30   -1.006681E+00
+  31   -9.588917E-01  32   -7.634147E-01  33   -6.791809E-01  34   -6.478266E-01  35   -7.672057E-01  36   -3.702392E-01
+  37   -3.180190E-01  38    6.455220E-01  39    7.049335E-01  40    8.591815E-01  41    1.921997E+00  42    8.187510E-01
+  43    1.230228E+00  44    4.178713E+00  45    7.036190E-01  46    2.564240E+00
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+ RUN  11   MAX =  20   ***** CHI2 =  0.4037273065D+02 *****     W(1) =     80.00     W(2) = 1.00     W(3) =   0.00011
+
+                     WEIGHT            EXP. NORM.          ERR. NORM.          CALC. NORM.            CHI2
+         1        1.000000E+00        1.000000E+00        0.000000E+00        1.000000E+00        4.037273E+01
+
+ *** VARIABLES
+
+   1    1.769000E+02   2    7.549760E+00
+
+ *** FUNCTIONS
+
+   1    1.207741E-01   2    6.493398E-02   3    1.153810E-01   4   -6.545800E-02   5    1.239272E-01   6    3.286560E-01
+   7    5.773064E-01   8    5.097902E-01   9    3.785809E-01  10    5.043054E-01  11    4.903844E-01  12    4.727255E-01
+  13    5.061415E-01  14    3.595658E-01  15    3.009297E-01  16    2.059790E-01  17    1.561484E-01  18    1.417548E-01
+  19   -1.542214E-01  20   -2.155478E-01  21    2.934399E-01  22   -1.574316E-01  23   -7.442053E-02  24   -4.177879E-01
+  25   -4.012897E-01  26   -4.879027E-01  27   -8.363973E-01  28   -3.915331E-01  29   -5.666572E-01  30   -1.007075E+00
+  31   -9.593118E-01  32   -7.638651E-01  33   -6.796578E-01  34   -6.483275E-01  35   -7.677410E-01  36   -3.708163E-01
+  37   -3.186149E-01  38    6.448497E-01  39    7.042241E-01  40    8.584242E-01  41    1.921144E+00  42    8.178706E-01
+  43    1.229228E+00  44    4.177305E+00  45    7.026469E-01  46    2.563078E+00
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+ RUN  12   MAX =  20   ***** CHI2 =  0.4036737052D+02 *****     W(1) =     40.00     W(2) = 1.00     W(3) =   0.00005
+
+                     WEIGHT            EXP. NORM.          ERR. NORM.          CALC. NORM.            CHI2
+         1        1.000000E+00        1.000000E+00        0.000000E+00        1.000000E+00        4.036737E+01
+
+ *** VARIABLES
+
+   1    1.773000E+02   2    7.547841E+00
+
+ *** FUNCTIONS
+
+   1    1.207741E-01   2    6.493895E-02   3    1.153854E-01   4   -6.545980E-02   5    1.239221E-01   6    3.286456E-01
+   7    5.772999E-01   8    5.097852E-01   9    3.785818E-01  10    5.043146E-01  11    4.904017E-01  12    4.727476E-01
+  13    5.061654E-01  14    3.595882E-01  15    3.009456E-01  16    2.059843E-01  17    1.561407E-01  18    1.417392E-01
+  19   -1.542496E-01  20   -2.155815E-01  21    2.933971E-01  22   -1.574869E-01  23   -7.448411E-02  24   -4.178620E-01
+  25   -4.013718E-01  26   -4.879916E-01  27   -8.364952E-01  28   -3.916401E-01  29   -5.667714E-01  30   -1.007195E+00
+  31   -9.594398E-01  32   -7.640020E-01  33   -6.798037E-01  34   -6.484812E-01  35   -7.679052E-01  36   -3.709928E-01
+  37   -3.187968E-01  38    6.446435E-01  39    7.040081E-01  40    8.581995E-01  41    1.920897E+00  42    8.176333E-01
+  43    1.228972E+00  44    4.176955E+00  45    7.023994E-01  46    2.562796E+00
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+ RUN  13   MAX =  20   ***** CHI2 =  0.4036353935D+02 *****     W(1) =     80.00     W(2) = 1.00     W(3) =   0.00009
+
+                     WEIGHT            EXP. NORM.          ERR. NORM.          CALC. NORM.            CHI2
+         1        1.000000E+00        1.000000E+00        0.000000E+00        1.000000E+00        4.036354E+01
+
+ *** VARIABLES
+
+   1    1.765000E+02   2    7.551711E+00
+
+ *** FUNCTIONS
+
+   1    1.207751E-01   2    6.493398E-02   3    1.153803E-01   4   -6.546069E-02   5    1.239251E-01   6    3.286534E-01
+   7    5.773064E-01   8    5.097919E-01   9    3.785845E-01  10    5.043116E-01  11    4.903936E-01  12    4.727375E-01
+  13    5.061556E-01  14    3.595805E-01  15    3.009438E-01  16    2.059916E-01  17    1.561567E-01  18    1.417611E-01
+  19   -1.542198E-01  20   -2.155486E-01  21    2.934357E-01  22   -1.574439E-01  23   -7.443730E-02  24   -4.178112E-01
+  25   -4.013193E-01  26   -4.879385E-01  27   -8.364414E-01  28   -3.915825E-01  29   -5.667130E-01  30   -1.007140E+00
+  31   -9.593852E-01  32   -7.639474E-01  33   -6.797483E-01  34   -6.484259E-01  35   -7.678524E-01  36   -3.709411E-01
+  37   -3.187497E-01  38    6.446921E-01  39    7.040488E-01  40    8.582149E-01  41    1.920884E+00  42    8.175668E-01
+  43    1.228857E+00  44    4.176784E+00  45    7.022913E-01  46    2.562601E+00
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+ RUN  14   MAX =  20   ***** CHI2 =  0.4040424039D+02 *****     W(1) =    160.00     W(2) = 1.00     W(3) =   0.00018
+
+                     WEIGHT            EXP. NORM.          ERR. NORM.          CALC. NORM.            CHI2
+         1        1.000000E+00        1.000000E+00        0.000000E+00        1.000000E+00        4.040424E+01
+
+ *** VARIABLES
+
+   1    1.749000E+02   2    7.559412E+00
+
+ *** FUNCTIONS
+
+   1    1.207732E-01   2    6.491040E-02   3    1.153610E-01   4   -6.544815E-02   5    1.239569E-01   6    3.287092E-01
+   7    5.773360E-01   8    5.098128E-01   9    3.785719E-01  10    5.042524E-01  11    4.902809E-01  12    4.725981E-01
+  13    5.060081E-01  14    3.594453E-01  15    3.008397E-01  16    2.059496E-01  17    1.561956E-01  18    1.418423E-01
+  19   -1.540647E-01  20   -2.153639E-01  21    2.936786E-01  22   -1.571236E-01  23   -7.406625E-02  24   -4.173749E-01
+  25   -4.008295E-01  26   -4.874010E-01  27   -8.358493E-01  28   -3.909336E-01  29   -5.660183E-01  30   -1.006402E+00
+  31   -9.585980E-01  32   -7.631033E-01  33   -6.788524E-01  34   -6.474833E-01  35   -7.668453E-01  36   -3.698560E-01
+  37   -3.176278E-01  38    6.459619E-01  39    7.053879E-01  40    8.596407E-01  41    1.922486E+00  42    8.192081E-01
+  43    1.230714E+00  44    4.179383E+00  45    7.040930E-01  46    2.564759E+00
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+ RUN  15   MAX =  20   ***** CHI2 =  0.4037926670D+02 *****     W(1) =    160.00     W(2) = 1.00     W(3) =   0.50000
+
+                     WEIGHT            EXP. NORM.          ERR. NORM.          CALC. NORM.            CHI2
+         1        1.000000E+00        1.000000E+00        0.000000E+00        1.000000E+00        4.037927E+01
+
+ *** VARIABLES
+
+   1    1.757000E+02   2    7.555561E+00
+
+ *** FUNCTIONS
+
+   1    1.207741E-01   2    6.492343E-02   3    1.153714E-01   4   -6.545532E-02   5    1.239395E-01   6    3.286783E-01
+   7    5.773204E-01   8    5.098020E-01   9    3.785800E-01  10    5.042871E-01  11    4.903464E-01  12    4.726788E-01
+  13    5.060928E-01  14    3.595233E-01  15    3.009005E-01  16    2.059748E-01  17    1.561752E-01  18    1.417978E-01
+  19   -1.541510E-01  20   -2.154678E-01  21    2.935410E-01  22   -1.573059E-01  23   -7.427728E-02  24   -4.176239E-01
+  25   -4.011092E-01  26   -4.877087E-01  27   -8.361894E-01  28   -3.913065E-01  29   -5.664175E-01  30   -1.006828E+00
+  31   -9.590526E-01  32   -7.635913E-01  33   -6.793712E-01  34   -6.480284E-01  35   -7.674299E-01  36   -3.704872E-01
+  37   -3.182811E-01  38    6.452219E-01  39    7.046046E-01  40    8.587990E-01  41    1.921532E+00  42    8.182160E-01
+  43    1.229587E+00  44    4.177798E+00  45    7.030002E-01  46    2.563451E+00
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+ RUN  16   MAX =  20   ***** CHI2 =  0.4026363743D+02 *****     W(1) =     80.00     W(2) = 1.00     W(3) =   0.00010
+
+                     WEIGHT            EXP. NORM.          ERR. NORM.          CALC. NORM.            CHI2
+         1        1.000000E+00        1.000000E+00        0.000000E+00        1.000000E+00        4.026363E+01
+
+ *** VARIABLES
+
+   1    1.757000E+02   2    7.555782E+00
+
+ *** FUNCTIONS
+
+   1    1.207798E-01   2    6.495631E-02   3    1.153928E-01   4   -6.548847E-02   5    1.238780E-01   6    3.285852E-01
+   7    5.772834E-01   8    5.097802E-01   9    3.786252E-01  10    5.044146E-01  11    4.905719E-01  12    4.729614E-01
+  13    5.063947E-01  14    3.598052E-01  15    3.011387E-01  16    2.061082E-01  17    1.561618E-01  18    1.417103E-01
+  19   -1.543757E-01  20   -2.157512E-01  21    2.931458E-01  22   -1.578581E-01  23   -7.492853E-02  24   -4.184140E-01
+  25   -4.020163E-01  26   -4.887252E-01  27   -8.373353E-01  28   -3.925689E-01  29   -5.677868E-01  30   -1.008312E+00
+  31   -9.606605E-01  32   -7.653347E-01  33   -6.812345E-01  34   -6.499976E-01  35   -7.695744E-01  36   -3.728292E-01
+  37   -3.207333E-01  38    6.424229E-01  39    7.015991E-01  40    8.554642E-01  41    1.917630E+00  42    8.139600E-01
+  43    1.224631E+00  44    4.170782E+00  45    6.981509E-01  46    2.557331E+00
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+ RUN  17   MAX =  20   ***** CHI2 =  0.4032207966D+02 *****     W(1) =    160.00     W(2) = 1.00     W(3) =   0.00018
+
+                     WEIGHT            EXP. NORM.          ERR. NORM.          CALC. NORM.            CHI2
+         1        1.000000E+00        1.000000E+00        0.000000E+00        1.000000E+00        4.032208E+01
+
+ *** VARIABLES
+
+   1    1.741000E+02   2    7.563485E+00
+
+ *** FUNCTIONS
+
+   1    1.207779E-01   2    6.492777E-02   3    1.153707E-01   4   -6.547144E-02   5    1.239200E-01   6    3.286554E-01
+   7    5.773188E-01   8    5.098053E-01   9    3.786044E-01  10    5.043350E-01  11    4.904246E-01  12    4.727785E-01
+  13    5.062000E-01  14    3.596268E-01  15    3.009985E-01  16    2.060463E-01  17    1.562039E-01  18    1.418056E-01
+  19   -1.541850E-01  20   -2.155211E-01  21    2.934524E-01  22   -1.574513E-01  23   -7.445616E-02  24   -4.178545E-01
+  25   -4.013852E-01  26   -4.880295E-01  27   -8.365658E-01  28   -3.917243E-01  29   -5.668795E-01  30   -1.007344E+00
+  31   -9.596244E-01  32   -7.642204E-01  33   -6.800511E-01  34   -6.487517E-01  35   -7.682369E-01  36   -3.713823E-01
+  37   -3.192334E-01  38    6.441228E-01  39    7.033992E-01  40    8.574017E-01  41    1.919833E+00  42    8.162544E-01
+  43    1.227251E+00  44    4.174467E+00  45    7.007077E-01  46    2.560445E+00
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+ RUN  18   MAX =  20   ***** CHI2 =  0.4028481386D+02 *****     W(1) =     80.00     W(2) = 1.00     W(3) =   0.00009
+
+                     WEIGHT            EXP. NORM.          ERR. NORM.          CALC. NORM.            CHI2
+         1        1.000000E+00        1.000000E+00        0.000000E+00        1.000000E+00        4.028481E+01
+
+ *** VARIABLES
+
+   1    1.749000E+02   2    7.559640E+00
+
+ *** FUNCTIONS
+
+   1    1.207789E-01   2    6.494453E-02   3    1.153840E-01   4   -6.548219E-02   5    1.238944E-01   6    3.286141E-01
+   7    5.772982E-01   8    5.097911E-01   9    3.786180E-01  10    5.043830E-01  11    4.905143E-01  12    4.728908E-01
+  13    5.063192E-01  14    3.597365E-01  15    3.010858E-01  16    2.060872E-01  17    1.561816E-01  18    1.417520E-01
+  19   -1.542961E-01  20   -2.156561E-01  21    2.932699E-01  22   -1.576949E-01  23   -7.473986E-02  24   -4.181917E-01
+  25   -4.017662E-01  26   -4.884511E-01  27   -8.370335E-01  28   -3.922381E-01  29   -5.674320E-01  30   -1.007936E+00
+  31   -9.602587E-01  32   -7.649042E-01  33   -6.807773E-01  34   -6.495171E-01  35   -7.690605E-01  36   -3.722759E-01
+  37   -3.201620E-01  38    6.430690E-01  39    7.022803E-01  40    8.561907E-01  41    1.918447E+00  42    8.147976E-01
+  43    1.225587E+00  44    4.172133E+00  45    6.990979E-01  46    2.558479E+00
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+ RUN  19   MAX =  20   ***** CHI2 =  0.4027015200D+02 *****     W(1) =     40.00     W(2) = 1.00     W(3) =   0.00005
+
+                     WEIGHT            EXP. NORM.          ERR. NORM.          CALC. NORM.            CHI2
+         1        1.000000E+00        1.000000E+00        0.000000E+00        1.000000E+00        4.027015E+01
+
+ *** VARIABLES
+
+   1    1.753000E+02   2    7.557717E+00
+
+ *** FUNCTIONS
+
+   1    1.207798E-01   2    6.495135E-02   3    1.153891E-01   4   -6.548667E-02   5    1.238841E-01   6    3.285964E-01
+   7    5.772900E-01   8    5.097852E-01   9    3.786225E-01  10    5.044034E-01  11    4.905511E-01  12    4.729362E-01
+  13    5.063671E-01  14    3.597805E-01  15    3.011202E-01  16    2.061019E-01  17    1.561707E-01  18    1.417280E-01
+  19   -1.543442E-01  20   -2.157139E-01  21    2.931938E-01  22   -1.577961E-01  23   -7.485725E-02  24   -4.183308E-01
+  25   -4.019237E-01  26   -4.886245E-01  27   -8.372252E-01  28   -3.924478E-01  29   -5.676578E-01  30   -1.008176E+00
+  31   -9.605154E-01  32   -7.651801E-01  33   -6.810707E-01  34   -6.498255E-01  35   -7.693915E-01  36   -3.726328E-01
+  37   -3.205307E-01  38    6.426501E-01  39    7.018366E-01  40    8.557129E-01  41    1.917903E+00  42    8.142275E-01
+  43    1.224931E+00  44    4.171205E+00  45    6.984529E-01  46    2.557699E+00
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+ RUN  20   MAX =  20   ***** CHI2 =  0.4026482492D+02 *****     W(1) =     20.00     W(2) = 1.00     W(3) =   0.00002
+
+                     WEIGHT            EXP. NORM.          ERR. NORM.          CALC. NORM.            CHI2
+         1        1.000000E+00        1.000000E+00        0.000000E+00        1.000000E+00        4.026482E+01
+
+ *** VARIABLES
+
+   1    1.755000E+02   2    7.556753E+00
+
+ *** FUNCTIONS
+
+   1    1.207798E-01   2    6.495446E-02   3    1.153913E-01   4   -6.548847E-02   5    1.238800E-01   6    3.285892E-01
+   7    5.772859E-01   8    5.097827E-01   9    3.786243E-01  10    5.044105E-01  11    4.905649E-01  12    4.729539E-01
+  13    5.063862E-01  14    3.597975E-01  15    3.011335E-01  16    2.061072E-01  17    1.561663E-01  18    1.417181E-01
+  19   -1.543641E-01  20   -2.157370E-01  21    2.931625E-01  22   -1.578366E-01  23   -7.490407E-02  24   -4.183857E-01
+  25   -4.019848E-01  26   -4.886916E-01  27   -8.373003E-01  28   -3.925297E-01  29   -5.677458E-01  30   -1.008269E+00
+  31   -9.606149E-01  32   -7.652865E-01  33   -6.811842E-01  34   -6.499453E-01  35   -7.695197E-01  36   -3.727711E-01
+  37   -3.206739E-01  38    6.424886E-01  39    7.016664E-01  40    8.555310E-01  41    1.917700E+00  42    8.140215E-01
+  43    1.224695E+00  44    4.170870E+00  45    6.982139E-01  46    2.557399E+00
+
+ RUN  20   MAX =  20   ***** CHI2 =  0.4026363754D+02 *****     KE = 3     W(1) =      5.0000
+
+
+ STANDARD ERRORS (VARIANCE AT BEST FIT EQUAL TO DEGREE OF FREEDOM:    43.RENORMALISATION FACTOR   0.941549D+00 )
+   2.099772D+03   1.018532D+01
+
+ ERROR ENHANCEMENTS (MULTI/SINGLE VARIABLE ERROR)
+   7.540875D+02   7.540876D+02
+
+ ERROR CORRELATION MATRIX
+   1.000000E+00
+  -9.999992E-01   1.000000E+00
+
+
+ SEARCH ENDED BY NUMBER OF EVALUATIONS
+1
+ ******* FINAL RESULTS *******
+
+ **** FIRST CONTROL CARD ****  1  1 1 1 1 1 1 1 1 1 2  2 2 2 2 2 2 2 2 2 3  3 3 3 3 3 3 3 3 3 4  4 4 4 4 4 4 4 4 4 5
+             1 2 3 4 5 6 7 8 9 0  1 2 3 4 5 6 7 8 9 0  1 2 3 4 5 6 7 8 9 0  1 2 3 4 5 6 7 8 9 0  1 2 3 4 5 6 7 8 9 0
+             T F F F F F F F F F  F F F F F T F F F F  F F F F T T F T F F  T T F F F F F F F F  F F F F F F F F F F
+
+ *** SECOND CONTROL CARD ****  1  1 1 1 1 1 1 1 1 1 2  2 2 2 2 2 2 2 2 2 3  3 3 3 3 3 3 3 3 3 4  4 4 4 4 4 4 4 4 4 5
+             1 2 3 4 5 6 7 8 9 0  1 2 3 4 5 6 7 8 9 0  1 2 3 4 5 6 7 8 9 0  1 2 3 4 5 6 7 8 9 0  1 2 3 4 5 6 7 8 9 0
+             F F T T F T F F F F  F F F F F F F F F F  T F F T F F F F F F  F F F F F F F F F F  F F F F F F F F F F
+
+
+ OPTICAL POTENTIALS  **  1 **     REDUCED RADIUS MULTIPLIED BY     0.783792E+01
+
+ VOLUME REAL POTENTIAL           DEPTH  175.699982 MEV  RADIUS 7.555782 FERMI (REDUCED 0.964003)  DIFFUSENESS 0.852000 FERMI
+ VOLUME IMAGINARY POTENTIAL      DEPTH   23.120001 MEV  RADIUS 9.436860 FERMI (REDUCED 1.204000)  DIFFUSENESS 0.598000 FERMI
+ SURFACE REAL POTENTIAL          DEPTH    0.000000 MEV  RADIUS 0.000000 FERMI (REDUCED 0.000000)  DIFFUSENESS 0.002853 FERMI
+ SURFACE IMAGINARY POTENTIAL     DEPTH   35.630001 MEV  RADIUS 7.007104 FERMI (REDUCED 0.894000)  DIFFUSENESS 0.869000 FERMI
+ REAL SPIN-ORBIT POTENTIAL       DEPTH    0.000000 MEV  RADIUS 0.000000 FERMI (REDUCED 0.000000)  DIFFUSENESS 0.002853 FERMI
+ IMAGINARY SPIN-ORBIT POTENTIAL  DEPTH    0.000000 MEV  RADIUS 0.000000 FERMI (REDUCED 0.000000)  DIFFUSENESS 0.002853 FERMI
+ COULOMB POTENTIAL  PRODUCT OF CHARGES  246.000000      RADIUS10.675252 FERMI (REDUCED 1.362000)  DIFFUSENESS 0.000000 FERMI
+ SPIN-ORBIT COULOMB POTENTIAL    DEPTH    0.000000      RADIUS 0.000000 FERMI (REDUCED 0.000000)  DIFFUSENESS 0.000000 FERMI
+              THIRD CHARGE PARAMETER 0.000000
+1     208Pb + 7Li = 208Pb + 7Li E = 39.0 MeV                                  
+
+
+
+
+                              **********   STATE    1    **********
+
+
+
+
+                                            CROSS-SECTION     
+
+          ANGLE          CALC. VAL.           EXP. VAL.          EXP. ERROR          COR. ERROR             CHI2
+
+          31.300         0.10369E+05         0.10245E+05         0.10245E+04         0.10245E+04         0.14588E-01
+          33.600         0.79203E+04         0.78692E+04         0.78692E+03         0.78692E+03         0.42193E-02
+          35.100         0.66856E+04         0.66093E+04         0.66093E+03         0.66093E+03         0.13316E-01
+          37.000         0.54146E+04         0.54503E+04         0.54503E+03         0.54503E+03         0.42887E-02
+          38.100         0.48201E+04         0.47611E+04         0.47611E+03         0.47611E+03         0.15346E-01
+          40.300         0.38459E+04         0.37236E+04         0.37236E+03         0.37236E+03         0.10797E+00
+          42.600         0.31418E+04         0.29703E+04         0.29703E+03         0.29703E+03         0.33326E+00
+          42.900         0.30685E+04         0.29197E+04         0.29197E+03         0.29197E+03         0.25988E+00
+          44.100         0.28003E+04         0.26981E+04         0.26981E+03         0.26981E+03         0.14336E+00
+          45.600         0.25144E+04         0.23937E+04         0.23937E+03         0.23937E+03         0.25443E+00
+          47.500         0.22271E+04         0.21230E+04         0.21230E+03         0.21230E+03         0.24066E+00
+          49.000         0.20269E+04         0.19353E+04         0.19353E+03         0.19353E+03         0.22369E+00
+          50.600         0.18185E+04         0.17308E+04         0.17308E+03         0.17308E+03         0.25644E+00
+          52.100         0.16373E+04         0.15804E+04         0.15804E+03         0.15804E+03         0.12946E+00
+          54.000         0.14254E+04         0.13837E+04         0.13837E+03         0.13837E+03         0.90685E-01
+          56.200         0.11857E+04         0.11618E+04         0.11618E+03         0.11618E+03         0.42481E-01
+          58.400         0.97174E+03         0.95680E+03         0.95680E+02         0.95680E+02         0.24387E-01
+          59.500         0.87708E+03         0.86482E+03         0.86482E+02         0.86482E+02         0.20082E-01
+          61.400         0.72465E+03         0.73602E+03         0.73602E+02         0.73602E+02         0.23832E-01
+          62.100         0.67222E+03         0.68705E+03         0.68705E+02         0.68705E+02         0.46549E-01
+          63.100         0.60255E+03         0.58539E+03         0.58539E+02         0.58539E+02         0.85934E-01
+          65.000         0.48950E+03         0.49735E+03         0.49735E+02         0.49735E+02         0.24919E-01
+          66.100         0.43346E+03         0.43674E+03         0.43674E+02         0.43674E+02         0.56143E-02
+          67.900         0.35121E+03         0.36654E+03         0.36654E+02         0.36654E+02         0.17507E+00
+          69.000         0.30676E+03         0.31961E+03         0.31961E+02         0.31961E+02         0.16162E+00
+          70.100         0.26785E+03         0.28161E+03         0.28161E+02         0.28161E+02         0.23885E+00
+          71.900         0.21584E+03         0.23556E+03         0.23556E+02         0.23556E+02         0.70113E+00
+          72.600         0.19858E+03         0.20669E+03         0.20669E+02         0.20669E+02         0.15411E+00
+          74.100         0.16513E+03         0.17507E+03         0.17507E+02         0.17507E+02         0.32238E+00
+          75.900         0.13081E+03         0.14548E+03         0.14548E+02         0.14548E+02         0.10167E+01
+          77.000         0.11362E+03         0.12569E+03         0.12569E+02         0.12569E+02         0.92287E+00
+          78.100         0.99332E+02         0.10756E+03         0.10756E+02         0.10756E+02         0.58574E+00
+          79.600         0.83329E+02         0.89421E+02         0.89421E+01         0.89421E+01         0.46408E+00
+          81.100         0.69625E+02         0.74465E+02         0.74465E+01         0.74465E+01         0.42250E+00
+          83.300         0.52756E+02         0.57155E+02         0.57155E+01         0.57155E+01         0.59224E+00
+          84.400         0.46196E+02         0.47985E+02         0.47985E+01         0.47985E+01         0.13900E+00
+          85.900         0.39163E+02         0.40461E+02         0.40461E+01         0.40461E+01         0.10287E+00
+          88.100         0.30916E+02         0.29050E+02         0.29050E+01         0.29050E+01         0.41271E+00
+          90.000         0.24571E+02         0.22961E+02         0.22961E+01         0.22961E+01         0.49224E+00
+          92.200         0.18893E+02         0.17404E+02         0.17404E+01         0.17404E+01         0.73182E+00
+          95.200         0.13714E+02         0.11508E+02         0.11508E+01         0.11508E+01         0.36773E+01
+          99.000         0.82120E+01         0.75939E+01         0.75939E+00         0.75939E+00         0.66253E+00
+         103.900         0.46721E+01         0.41624E+01         0.41624E+00         0.41624E+00         0.14997E+01
+         107.600         0.29512E+01         0.20826E+01         0.20826E+00         0.20826E+00         0.17395E+02
+         111.000         0.24321E+01         0.22734E+01         0.22734E+00         0.22734E+00         0.48741E+00
+         115.100         0.16401E+01         0.13061E+01         0.13061E+00         0.13061E+00         0.65399E+01
+
+
+ EXPERIMENTAL NORMALIZATION    0.10000E+01
+ NORMALIZATION ERROR           0.00000E+00
+ CALCULATED NORMALIZATION      0.10000E+01
+
+ ***** CHI2 =   0.402636E+02   *****
+
+1
+                                             +      CROSS-SECTION     
+
+                                             +    CALCULATED VALUE
+                                             *    EXPERIMENTAL VALUE
+
+           1               1               1               1               1               1               1           
+       ....*...............*...............*...............*...............*...............*...............*...........
+ *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *-
+ *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *- *-
+  31.30.   .               .               .               .               *               .               .          .
+  33.60.   .               .               .               .             * .               .               .          .
+  35.10.   .               .               .               .            *  .               .               .          .
+  37.00.   .               .               .               .           *   .               .               .          .
+  38.10.   .               .               .               .          *    .               .               .          .
+  40.30.   .               .               .               .        *      .               .               .          .
+  42.60.   .               .               .               .       *       .               .               .          .
+  42.90.   .               .               .               .      *+       .               .               .          .
+  44.10.   .               .               .               .      *        .               .               .          .
+  45.60.   .               .               .               .     *         .               .               .          .
+  47.50.   .               .               .               .    *+         .               .               .          .
+  49.00.   .               .               .               .    *          .               .               .          .
+  50.60.   .               .               .               .   *           .               .               .          .
+  52.10.   .               .               .               .  *            .               .               .          .
+  54.00.   .               .               .               . *             .               .               .          .
+  56.20.   .               .               .               .*              .               .               .          .
+  58.40.   .               .               .               *               .               .               .          .
+  59.50.   .               .               .              *.               .               .               .          .
+  61.40.   .               .               .             * .               .               .               .          .
+  62.10.   .               .               .            *  .               .               .               .          .
+  63.10.   .               .               .           *   .               .               .               .          .
+  65.00.   .               .               .          *    .               .               .               .          .
+  66.10.   .               .               .         *     .               .               .               .          .
+  67.90.   .               .               .        *      .               .               .               .          .
+  69.00.   .               .               .       *       .               .               .               .          .
+  70.10.   .               .               .      *        .               .               .               .          .
+  71.90.   .               .               .    +*         .               .               .               .          .
+  72.60.   .               .               .    *          .               .               .               .          .
+  74.10.   .               .               .  +*           .               .               .               .          .
+  75.90.   .               .               . +*            .               .               .               .          .
+  77.00.   .               .               .+*             .               .               .               .          .
+  78.10.   .               .               +*              .               .               .               .          .
+  79.60.   .               .              *.               .               .               .               .          .
+  81.10.   .               .            +* .               .               .               .               .          .
+  83.30.   .               .           *   .               .               .               .               .          .
+  84.40.   .               .          *    .               .               .               .               .          .
+  85.90.   .               .        +*     .               .               .               .               .          .
+  88.10.   .               .      *+       .               .               .               .               .          .
+  90.00.   .               .     *         .               .               .               .               .          .
+  92.20.   .               .   *           .               .               .               .               .          .
+  95.20.   .               .*+             .               .               .               .               .          .
+  99.00.   .             *+.               .               .               .               .               .          .
+ 103.90.   .         *+    .               .               .               .               .               .          .
+ 107.60.   .    *  +       .               .               .               .               .               .          .
+ 111.00.   .     *         .               .               .               .               .               .          .
+ 115.10.   . *+            .               .               .               .               .               .          .
+       ....*...............*...............*...............*...............*...............*...............*...........
+
+ ************ CHI2 **********    0.4026363743D+02
+
+
+1     208Pb + 7Li = 208Pb + 7Li E = 39.0 MeV                                  
+
+
+ TOTAL REACTION CROSS SECTION =   1222.076660 MILLIBARNS
+
+ ELASTIC SCATTERING ON THE TARGET STATE OF SPIN =  0.0+
+
+     ANGLE    CROSS-SECTION      C. S./RUTHER.  
+      1.000     0.94999E+10           1.0000129
+      2.000     0.59380E+09           0.9999510
+      3.000     0.11732E+09           0.9999567
+      4.000     0.37138E+08           1.0000206
+      5.000     0.15219E+08           1.0000307
+      6.000     0.73432E+07           1.0000067
+      7.000     0.39648E+07           0.9996388
+      8.000     0.23268E+07           1.0000423
+      9.000     0.14540E+07           1.0001482
+     10.000     0.95481E+06           1.0000393
+     11.000     0.65254E+06           0.9995760
+     12.000     0.46177E+06           1.0006583
+     13.000     0.33540E+06           0.9997997
+     14.000     0.24953E+06           0.9991098
+     15.000     0.19000E+06           1.0010658
+     16.000     0.14691E+06           1.0004326
+     17.000     0.11536E+06           0.9995355
+     18.000     0.91814E+05           0.9980620
+     19.000     0.74278E+05           1.0005021
+     20.000     0.60770E+05           1.0029647
+     21.000     0.49978E+05           1.0005372
+     22.000     0.41495E+05           0.9984072
+     23.000     0.34795E+05           0.9978268
+     24.000     0.29411E+05           0.9975629
+     25.000     0.25111E+05           1.0003036
+     26.000     0.21603E+05           1.0041215
+     27.000     0.18618E+05           1.0036874
+     28.000     0.16090E+05           1.0004108
+     29.000     0.14001E+05           0.9987817
+     30.000     0.12255E+05           0.9982162
+     31.000     0.10769E+05           0.9969500
+     32.000     0.95182E+04           0.9972939
+     33.000     0.84745E+04           1.0009179
+     34.000     0.75721E+04           1.0043242
+     35.000     0.67619E+04           1.0035866
+     36.000     0.60404E+04           0.9997967
+     37.000     0.54146E+04           0.9962934
+     38.000     0.48708E+04           0.9933218
+     39.000     0.43882E+04           0.9889690
+     40.000     0.39617E+04           0.9840347
+     41.000     0.35988E+04           0.9826118
+     42.000     0.32983E+04           0.9874821
+     43.000     0.30447E+04           0.9971578
+     44.000     0.28213E+04           1.0084745
+     45.000     0.26220E+04           1.0207110
+     46.000     0.24479E+04           1.0356592
+     47.000     0.22967E+04           1.0539702
+     48.000     0.21596E+04           1.0728557
+     49.000     0.20269E+04           1.0880652
+     50.000     0.18955E+04           1.0975841
+     51.000     0.17684E+04           1.1026620
+     52.000     0.16488E+04           1.1052375
+     53.000     0.15357E+04           1.1049552
+     54.000     0.14254E+04           1.0991109
+     55.000     0.13153E+04           1.0853760
+     56.000     0.12069E+04           1.0642084
+     57.000     0.11036E+04           1.0384527
+     58.000     0.10079E+04           1.0107066
+     59.000     0.91936E+03           0.9811991
+     60.000     0.83577E+03           0.9481723
+     61.000     0.75567E+03           0.9101773
+     62.000     0.67955E+03           0.8679539
+     63.000     0.60920E+03           0.8241762
+     64.000     0.54594E+03           0.7814560
+     65.000     0.48950E+03           0.7405189
+     66.000     0.43835E+03           0.7001260
+     67.000     0.39100E+03           0.6586489
+     68.000     0.34696E+03           0.6158079
+     69.000     0.30676E+03           0.5731033
+     70.000     0.27115E+03           0.5327072
+     71.000     0.24023E+03           0.4958654
+     72.000     0.21329E+03           0.4621370
+     73.000     0.18923E+03           0.4299938
+     74.000     0.16723E+03           0.3981755
+     75.000     0.14709E+03           0.3666896
+     76.000     0.12912E+03           0.3367343
+     77.000     0.11362E+03           0.3097202
+     78.000     0.10052E+03           0.2862063
+     79.000     0.89364E+02           0.2655370
+     80.000     0.79505E+02           0.2463685
+     81.000     0.70488E+02           0.2276205
+     82.000     0.62196E+02           0.2091461
+     83.000     0.54779E+02           0.1916869
+     84.000     0.48427E+02           0.1762181
+     85.000     0.43156E+02           0.1631889
+     86.000     0.38753E+02           0.1521793
+     87.000     0.34884E+02           0.1421651
+     88.000     0.31269E+02           0.1321654
+     89.000     0.27806E+02           0.1218165
+     90.000     0.24571E+02           0.1115034
+     91.000     0.21713E+02           0.1019998
+     92.000     0.19318E+02           0.0938879
+     93.000     0.17343E+02           0.0871535
+     94.000     0.15637E+02           0.0812037
+     95.000     0.14033E+02           0.0752642
+     96.000     0.12440E+02           0.0688688
+     97.000     0.10876E+02           0.0621186
+     98.000     0.94358E+01           0.0555667
+     99.000     0.82120E+01           0.0498368
+    100.000     0.72377E+01           0.0452413
+    101.000     0.64698E+01           0.0416325
+    102.000     0.58215E+01           0.0385446
+    103.000     0.52137E+01           0.0355014
+    104.000     0.46125E+01           0.0322834
+    105.000     0.40347E+01           0.0290129
+    106.000     0.35263E+01           0.0260391
+    107.000     0.31292E+01           0.0237173
+    108.000     0.28560E+01           0.0222082
+    109.000     0.26827E+01           0.0213908
+    110.000     0.25591E+01           0.0209153
+    111.000     0.24321E+01           0.0203647
+    112.000     0.22679E+01           0.0194465
+    113.000     0.20647E+01           0.0181221
+    114.000     0.18490E+01           0.0166040
+    115.000     0.16569E+01           0.0152171
+    116.000     0.15122E+01           0.0141972
+    117.000     0.14122E+01           0.0135483
+    118.000     0.13313E+01           0.0130450
+    119.000     0.12373E+01           0.0123783
+    120.000     0.11114E+01           0.0113474
+    121.000     0.95761E+00           0.0099746
+    122.000     0.79845E+00           0.0084809
+    123.000     0.66085E+00           0.0071551
+    124.000     0.56314E+00           0.0062126
+    125.000     0.50917E+00           0.0057214
+    126.000     0.49045E+00           0.0056110
+    127.000     0.49185E+00           0.0057268
+    128.000     0.49700E+00           0.0058873
+    129.000     0.49249E+00           0.0059329
+    130.000     0.47150E+00           0.0057744
+    131.000     0.43649E+00           0.0054323
+    132.000     0.39834E+00           0.0050360
+    133.000     0.37052E+00           0.0047569
+    134.000     0.36048E+00           0.0046979
+    135.000     0.36384E+00           0.0048116
+    136.000     0.36621E+00           0.0049126
+    137.000     0.35209E+00           0.0047894
+    138.000     0.31461E+00           0.0043381
+    139.000     0.25939E+00           0.0036243
+    140.000     0.20029E+00           0.0028347
+    141.000     0.15118E+00           0.0021667
+    142.000     0.12018E+00           0.0017435
+    143.000     0.10923E+00           0.0016035
+    144.000     0.11680E+00           0.0017345
+    145.000     0.13949E+00           0.0020948
+    146.000     0.17085E+00           0.0025937
+    147.000     0.20021E+00           0.0030714
+    148.000     0.21527E+00           0.0033363
+    149.000     0.20849E+00           0.0032633
+    150.000     0.18243E+00           0.0028826
+    151.000     0.14891E+00           0.0023746
+    152.000     0.12154E+00           0.0019555
+    153.000     0.10714E+00           0.0017386
+    154.000     0.10284E+00           0.0016826
+    155.000     0.10095E+00           0.0016648
+    156.000     0.96639E-01           0.0016058
+    157.000     0.91273E-01           0.0015277
+    158.000     0.88978E-01           0.0014996
+    159.000     0.90602E-01           0.0015372
+    160.000     0.91996E-01           0.0015707
+    161.000     0.88805E-01           0.0015253
+    162.000     0.82820E-01           0.0014307
+    163.000     0.82466E-01           0.0014322
+    164.000     0.95362E-01           0.0016646
+    165.000     0.11920E+00           0.0020906
+    166.000     0.14022E+00           0.0024703
+    167.000     0.14244E+00           0.0025197
+    168.000     0.12060E+00           0.0021416
+    169.000     0.85288E-01           0.0015198
+    170.000     0.54740E-01           0.0009786
+    171.000     0.40175E-01           0.0007203
+    172.000     0.38095E-01           0.0006848
+    173.000     0.37618E-01           0.0006778
+    174.000     0.36783E-01           0.0006640
+    175.000     0.51951E-01           0.0009394
+    176.000     0.10867E+00           0.0019677
+    177.000     0.21834E+00           0.0039578
+    178.000     0.35935E+00           0.0065188
+    179.000     0.48054E+00           0.0087212
+1
+                                             +       C. S./RUTHER.    
+
+           1               1               1               1               1               1               1           
+       ....*...............*...............*...............*...............*...............*...............*...........
+   1.00.   .               .               .               .               .               .               +          .
+   2.00.   .               .               .               .               .               .               +          .
+   3.00.   .               .               .               .               .               .               +          .
+   4.00.   .               .               .               .               .               .               +          .
+   5.00.   .               .               .               .               .               .               +          .
+   6.00.   .               .               .               .               .               .               +          .
+   7.00.   .               .               .               .               .               .               +          .
+   8.00.   .               .               .               .               .               .               +          .
+   9.00.   .               .               .               .               .               .               +          .
+  10.00.   .               .               .               .               .               .               +          .
+  11.00.   .               .               .               .               .               .               +          .
+  12.00.   .               .               .               .               .               .               +          .
+  13.00.   .               .               .               .               .               .               +          .
+  14.00.   .               .               .               .               .               .               +          .
+  15.00.   .               .               .               .               .               .               +          .
+  16.00.   .               .               .               .               .               .               +          .
+  17.00.   .               .               .               .               .               .               +          .
+  18.00.   .               .               .               .               .               .               +          .
+  19.00.   .               .               .               .               .               .               +          .
+  20.00.   .               .               .               .               .               .               +          .
+  21.00.   .               .               .               .               .               .               +          .
+  22.00.   .               .               .               .               .               .               +          .
+  23.00.   .               .               .               .               .               .               +          .
+  24.00.   .               .               .               .               .               .               +          .
+  25.00.   .               .               .               .               .               .               +          .
+  26.00.   .               .               .               .               .               .               +          .
+  27.00.   .               .               .               .               .               .               +          .
+  28.00.   .               .               .               .               .               .               +          .
+  29.00.   .               .               .               .               .               .               +          .
+  30.00.   .               .               .               .               .               .               +          .
+  31.00.   .               .               .               .               .               .               +          .
+  32.00.   .               .               .               .               .               .               +          .
+  33.00.   .               .               .               .               .               .               +          .
+  34.00.   .               .               .               .               .               .               +          .
+  35.00.   .               .               .               .               .               .               +          .
+  36.00.   .               .               .               .               .               .               +          .
+  37.00.   .               .               .               .               .               .               +          .
+  38.00.   .               .               .               .               .               .               +          .
+  39.00.   .               .               .               .               .               .               +          .
+  40.00.   .               .               .               .               .               .               +          .
+  41.00.   .               .               .               .               .               .               +          .
+  42.00.   .               .               .               .               .               .               +          .
+  43.00.   .               .               .               .               .               .               +          .
+  44.00.   .               .               .               .               .               .               +          .
+  45.00.   .               .               .               .               .               .               +          .
+  46.00.   .               .               .               .               .               .               +          .
+  47.00.   .               .               .               .               .               .               +          .
+  48.00.   .               .               .               .               .               .               +          .
+  49.00.   .               .               .               .               .               .               .+         .
+  50.00.   .               .               .               .               .               .               .+         .
+  51.00.   .               .               .               .               .               .               .+         .
+  52.00.   .               .               .               .               .               .               .+         .
+  53.00.   .               .               .               .               .               .               .+         .
+  54.00.   .               .               .               .               .               .               .+         .
+  55.00.   .               .               .               .               .               .               .+         .
+  56.00.   .               .               .               .               .               .               +          .
+  57.00.   .               .               .               .               .               .               +          .
+  58.00.   .               .               .               .               .               .               +          .
+  59.00.   .               .               .               .               .               .               +          .
+  60.00.   .               .               .               .               .               .               +          .
+  61.00.   .               .               .               .               .               .              +.          .
+  62.00.   .               .               .               .               .               .              +.          .
+  63.00.   .               .               .               .               .               .              +.          .
+  64.00.   .               .               .               .               .               .             + .          .
+  65.00.   .               .               .               .               .               .             + .          .
+  66.00.   .               .               .               .               .               .             + .          .
+  67.00.   .               .               .               .               .               .            +  .          .
+  68.00.   .               .               .               .               .               .            +  .          .
+  69.00.   .               .               .               .               .               .           +   .          .
+  70.00.   .               .               .               .               .               .           +   .          .
+  71.00.   .               .               .               .               .               .          +    .          .
+  72.00.   .               .               .               .               .               .          +    .          .
+  73.00.   .               .               .               .               .               .         +     .          .
+  74.00.   .               .               .               .               .               .         +     .          .
+  75.00.   .               .               .               .               .               .        +      .          .
+  76.00.   .               .               .               .               .               .       +       .          .
+  77.00.   .               .               .               .               .               .       +       .          .
+  78.00.   .               .               .               .               .               .      +        .          .
+  79.00.   .               .               .               .               .               .      +        .          .
+  80.00.   .               .               .               .               .               .     +         .          .
+  81.00.   .               .               .               .               .               .     +         .          .
+  82.00.   .               .               .               .               .               .    +          .          .
+  83.00.   .               .               .               .               .               .    +          .          .
+  84.00.   .               .               .               .               .               .   +           .          .
+  85.00.   .               .               .               .               .               .  +            .          .
+  86.00.   .               .               .               .               .               .  +            .          .
+  87.00.   .               .               .               .               .               . +             .          .
+  88.00.   .               .               .               .               .               . +             .          .
+  89.00.   .               .               .               .               .               .+              .          .
+  90.00.   .               .               .               .               .               .+              .          .
+  91.00.   .               .               .               .               .               +               .          .
+  92.00.   .               .               .               .               .               +               .          .
+  93.00.   .               .               .               .               .              +.               .          .
+  94.00.   .               .               .               .               .              +.               .          .
+  95.00.   .               .               .               .               .             + .               .          .
+  96.00.   .               .               .               .               .            +  .               .          .
+  97.00.   .               .               .               .               .            +  .               .          .
+  98.00.   .               .               .               .               .           +   .               .          .
+  99.00.   .               .               .               .               .          +    .               .          .
+ 100.00.   .               .               .               .               .         +     .               .          .
+ 101.00.   .               .               .               .               .         +     .               .          .
+ 102.00.   .               .               .               .               .        +      .               .          .
+ 103.00.   .               .               .               .               .        +      .               .          .
+ 104.00.   .               .               .               .               .       +       .               .          .
+ 105.00.   .               .               .               .               .      +        .               .          .
+ 106.00.   .               .               .               .               .      +        .               .          .
+ 107.00.   .               .               .               .               .     +         .               .          .
+ 108.00.   .               .               .               .               .     +         .               .          .
+ 109.00.   .               .               .               .               .    +          .               .          .
+ 110.00.   .               .               .               .               .    +          .               .          .
+ 111.00.   .               .               .               .               .    +          .               .          .
+ 112.00.   .               .               .               .               .    +          .               .          .
+ 113.00.   .               .               .               .               .   +           .               .          .
+ 114.00.   .               .               .               .               .   +           .               .          .
+ 115.00.   .               .               .               .               .  +            .               .          .
+ 116.00.   .               .               .               .               . +             .               .          .
+ 117.00.   .               .               .               .               . +             .               .          .
+ 118.00.   .               .               .               .               . +             .               .          .
+ 119.00.   .               .               .               .               .+              .               .          .
+ 120.00.   .               .               .               .               .+              .               .          .
+ 121.00.   .               .               .               .               +               .               .          .
+ 122.00.   .               .               .               .              +.               .               .          .
+ 123.00.   .               .               .               .             + .               .               .          .
+ 124.00.   .               .               .               .            +  .               .               .          .
+ 125.00.   .               .               .               .           +   .               .               .          .
+ 126.00.   .               .               .               .           +   .               .               .          .
+ 127.00.   .               .               .               .           +   .               .               .          .
+ 128.00.   .               .               .               .           +   .               .               .          .
+ 129.00.   .               .               .               .           +   .               .               .          .
+ 130.00.   .               .               .               .           +   .               .               .          .
+ 131.00.   .               .               .               .           +   .               .               .          .
+ 132.00.   .               .               .               .          +    .               .               .          .
+ 133.00.   .               .               .               .          +    .               .               .          .
+ 134.00.   .               .               .               .          +    .               .               .          .
+ 135.00.   .               .               .               .          +    .               .               .          .
+ 136.00.   .               .               .               .          +    .               .               .          .
+ 137.00.   .               .               .               .          +    .               .               .          .
+ 138.00.   .               .               .               .         +     .               .               .          .
+ 139.00.   .               .               .               .        +      .               .               .          .
+ 140.00.   .               .               .               .      +        .               .               .          .
+ 141.00.   .               .               .               .    +          .               .               .          .
+ 142.00.   .               .               .               .   +           .               .               .          .
+ 143.00.   .               .               .               .  +            .               .               .          .
+ 144.00.   .               .               .               .   +           .               .               .          .
+ 145.00.   .               .               .               .    +          .               .               .          .
+ 146.00.   .               .               .               .      +        .               .               .          .
+ 147.00.   .               .               .               .       +       .               .               .          .
+ 148.00.   .               .               .               .       +       .               .               .          .
+ 149.00.   .               .               .               .       +       .               .               .          .
+ 150.00.   .               .               .               .      +        .               .               .          .
+ 151.00.   .               .               .               .     +         .               .               .          .
+ 152.00.   .               .               .               .    +          .               .               .          .
+ 153.00.   .               .               .               .   +           .               .               .          .
+ 154.00.   .               .               .               .   +           .               .               .          .
+ 155.00.   .               .               .               .   +           .               .               .          .
+ 156.00.   .               .               .               .  +            .               .               .          .
+ 157.00.   .               .               .               .  +            .               .               .          .
+ 158.00.   .               .               .               .  +            .               .               .          .
+ 159.00.   .               .               .               .  +            .               .               .          .
+ 160.00.   .               .               .               .  +            .               .               .          .
+ 161.00.   .               .               .               .  +            .               .               .          .
+ 162.00.   .               .               .               . +             .               .               .          .
+ 163.00.   .               .               .               . +             .               .               .          .
+ 164.00.   .               .               .               .   +           .               .               .          .
+ 165.00.   .               .               .               .    +          .               .               .          .
+ 166.00.   .               .               .               .     +         .               .               .          .
+ 167.00.   .               .               .               .     +         .               .               .          .
+ 168.00.   .               .               .               .    +          .               .               .          .
+ 169.00.   .               .               .               .  +            .               .               .          .
+ 170.00.   .               .               .               +               .               .               .          .
+ 171.00.   .               .               .             + .               .               .               .          .
+ 172.00.   .               .               .            +  .               .               .               .          .
+ 173.00.   .               .               .            +  .               .               .               .          .
+ 174.00.   .               .               .            +  .               .               .               .          .
+ 175.00.   .               .               .               +               .               .               .          .
+ 176.00.   .               .               .               .    +          .               .               .          .
+ 177.00.   .               .               .               .         +     .               .               .          .
+ 178.00.   .               .               .               .            +  .               .               .          .
+ 179.00.   .               .               .               .              +.               .               .          .
+       ....*...............*...............*...............*...............*...............*...............*...........
+ *** TOTAL TIME ***  0H  0MN  0S  0HUND OF S          DIFFERENCE SINCE LAST CALL     0HUND OF S    OR           2 UNITS
+
+
+ *** WORKSPACE USED IN THIS COMPUTATION      4135  ***              235865 MEMORIES NOT USED
+Stop - Program terminated.
