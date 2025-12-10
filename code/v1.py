@@ -1,5 +1,3 @@
-import numpy as np
-import tensorflow as tf
 import keras
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split

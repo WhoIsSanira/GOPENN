@@ -78,7 +78,7 @@ class EcisGenerator:
         opticals = ""
         for params in sample:
             for par in params:
-                opticals += "{:.3f}".format(par)[:5].ljust(10)
+                opticals += "{:.3f}".format(par).ljust(10)
 
             opticals += "\n"
 
