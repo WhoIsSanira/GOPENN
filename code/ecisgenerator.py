@@ -96,25 +96,10 @@ class EcisGenerator:
                 [1.300,   0.0,   0.0]  # Coulomb
             ]
         else:
-            if beam == Nuclei(1, 1):
-                gop = VarnerProton(target.A, target.Z, energy)
-            elif beam == Nuclei(1, 2):
-                gop = DaehnickDeuteron(target.A, target.Z, energy)
-            elif beam == Nuclei(2, 3):
-                gop = PangHelium3(target.A, target.Z, energy)
-            elif beam == Nuclei(2, 4):
-                gop = SuAlpha(target.A, target.Z, energy)
-            elif beam == Nuclei(3, 6):
-                gop = XuLithium6(target.A, target.Z, energy)
-            elif beam == Nuclei(3, 7):
-                gop = XuLithium7(target.A, target.Z, energy)
-            elif beam == Nuclei(3, 8):
-                gop = SuLithium8(target.A, target.Z, energy)
-            elif beam == Nuclei(4, 9):
-                gop = XuBeryllium9(target.A, target.Z, energy)
-            else:
+            gop = GlobalPotential.find_global_potential(beam, target, energy)
+            if gop is None:
                 self.__use_globalop = False
-                return self.create_sample(beam, target, energy)
+                self.create_sample(beam, target, energy)
             
             Vr, rv, av = gop.real_volume_depth(), gop.real_volume_radius(), gop.real_volume_diffuseness()
             Wv, rw, aw = gop.imag_volume_depth(), gop.imag_volume_radius(), gop.imag_volume_diffuseness()

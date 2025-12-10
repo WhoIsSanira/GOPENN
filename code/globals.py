@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import math
 from nuclei import Nuclei
 
@@ -212,6 +214,25 @@ class GlobalPotential:
             table += f'{round(params[i], 3)}'.center(step - 1) + '|'
 
         return table
+    
+    @staticmethod
+    def find_global_potential(projectile: Nuclei, target: Nuclei, energy: float) -> GlobalPotential:
+        dist = {
+            Nuclei(1, 1) : VarnerProton(target.A, target.Z, energy),
+            Nuclei(1, 2) : ZhangDeuteron(target.A, target.Z, energy) if target.A < 20 else DaehnickDeuteron(target.A, target.Z, energy),
+            Nuclei(1, 3) : PangA3(target.A, target.Z, energy, isospin=-1),
+            Nuclei(2, 3) : PangA3(target.A, target.Z, energy, isospin=1),
+            Nuclei(2, 4) : SuAlpha(target.A, target.Z, energy),
+            Nuclei(3, 6) : XuLithium6(target.A, target.Z, energy),
+            Nuclei(3, 7) : XuLithium7(target.A, target.Z, energy),
+            Nuclei(3, 8) : SuLithium8(target.A, target.Z, energy),
+            Nuclei(4, 9) : XuBeryllium9(target.A, target.Z, energy)
+        }
+
+        try:
+            return dist[projectile]
+        except:
+            return None
 
 
 class VarnerProton(GlobalPotential):
@@ -285,7 +306,7 @@ class VarnerProton(GlobalPotential):
     
 
 class ZhangDeuteron(GlobalPotential):
-    def __init__(self, charge: int, nuclons: int, energy: float) -> None:
+    def __init__(self, nuclons: int, charge: int, energy: float) -> None:
         super().__init__(Nuclei(1, 2), Nuclei(charge, nuclons), energy)
         self.params = {
             'Vr'  :  98.90, # MeV
@@ -413,9 +434,10 @@ class DaehnickDeuteron(GlobalPotential):
         return -math.pow(self.energy / self.params['E0'], 2)
     
 
-class PangHelium3(GlobalPotential):
-    def __init__(self, nuclons: int, charge: int, energy: float) -> None:
+class PangA3(GlobalPotential):
+    def __init__(self, nuclons: int, charge: int, energy: float, isospin: int = 1) -> None:
         super().__init__(Nuclei(2, 3), Nuclei(charge, nuclons), energy)
+        self.__isospin = isospin
         self.params = {
             'V0'  :  118.3, # MeV
             'Ve'  : -0.130, # MeV
@@ -451,7 +473,7 @@ class PangHelium3(GlobalPotential):
 
     def imag_surface_depth(self) -> float:
         Ws0, Wst, Wse0, Wsew = self.params['Ws0'], self.params['Wst'], self.params['Wse0'], self.params['Wsew']
-        return (Ws0 + Wst * (self._targ.A - 2 * self._targ.Z) / self._targ.A) * math.pow(1 + math.exp(((self.energy - self.coulomb_correction) - Wse0) / Wsew), -1)
+        return (Ws0 + self.__isospin * Wst * (self._targ.A - 2 * self._targ.Z) / self._targ.A) * math.pow(1 + math.exp(((self.energy - self.coulomb_correction) - Wse0) / Wsew), -1)
 
     def real_volume_radius(self) -> float:
         return self.__radius(self.params['r0'], self.params['r00'])
