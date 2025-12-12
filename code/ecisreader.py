@@ -38,12 +38,29 @@ class EcisReader:
         starting_index, stopping_index = 8, 15
         params = []
 
-        for i in range(starting_index, stopping_index + 1):
+        for i in range(starting_index, stopping_index):
             V, r, a = buffer[i].split()
             V, r, a = float(V), float(r), float(a)
-            params.extend([V, r, a])
+            
+            if V > 0.0: params.append(V)
+            if r > 0.0: params.append(r)
+            if a > 0.0: params.append(a)
 
         return params
+    
+
+def lithium7_dataset() -> list[tuple[numpy.ndarray, numpy.ndarray]]:
+    directory = '.\\ecis\\v1\\in\\'
+    files = os.listdir(directory)
+    files = [directory + files[i] for i in range(len(files))]
+
+    datasets = []
+
+    ecr = EcisReader()
+    for i in range(len(files)):
+        datasets.append(ecr.read(files[i]))
+
+    return datasets
 
 
 if __name__ == '__main__':
