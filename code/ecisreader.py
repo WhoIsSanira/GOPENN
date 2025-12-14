@@ -49,7 +49,7 @@ class EcisReader:
         return params
     
 
-def lithium7_dataset() -> list[tuple[numpy.ndarray, numpy.ndarray]]:
+def v1_dataset() -> list[tuple[numpy.ndarray, numpy.ndarray]]:
     directory = '.\\ecis\\v1\\in\\'
     files = os.listdir(directory)
     files = [directory + files[i] for i in range(len(files))]

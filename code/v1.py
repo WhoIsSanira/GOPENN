@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 from ecisreader import *
 
 
-def prepare_data(dataset) -> tuple:
+def prepare_data(dataset: list[tuple[numpy.ndarray, numpy.ndarray]]) -> tuple:
     xs = []
     ys = []
     scaler_x = StandardScaler()
@@ -21,19 +21,16 @@ def prepare_data(dataset) -> tuple:
     xs_scaled = scaler_x.fit_transform(xs)
     ys_scaled = scaler_y.fit_transform(ys)
 
-    with open('.\\models\\xscale.pkl', 'wb') as file:
+    with open('.\\models\\v1\\xscale.pkl', 'wb') as file:
         pickle.dump(scaler_x, file)
 
-    with open('.\\models\\yscale.pkl', 'wb') as file:
+    with open('.\\models\\v1\\yscale.pkl', 'wb') as file:
         pickle.dump(scaler_y, file)
 
-    xs_train, xs_test, ys_train, ys_test = train_test_split(xs_scaled, ys_scaled, test_size=0.2, train_size=0.8)
-    prepared_data = xs_train, xs_test, ys_train, ys_test
-
-    return prepared_data
+    return train_test_split(xs_scaled, ys_scaled, test_size=0.2, train_size=0.8)
 
 
-def build_model():
+def build_model() -> keras.Sequential:
     model = keras.Sequential([
         keras.layers.Input(shape=(5,)),
         keras.layers.Dense(100, activation='relu'),
@@ -48,13 +45,13 @@ def build_model():
     return model
 
 
-def train_model():
-    dataset = lithium7_dataset()
+def train_model() -> None:
+    dataset = v1_dataset()
     reaction_params_train, reaction_params_test, gops_train, gops_test = prepare_data(dataset)
 
     model = build_model()
     EPOCHS = 100
-    checkpoint_filepath = '.\\models\\v1.keras'
+    checkpoint_filepath = '.\\models\\v1\\v1.keras'
 
     callbacks = [keras.callbacks.EarlyStopping(patience=10, restore_best_weights=True, start_from_epoch=10), 
                  keras.callbacks.ModelCheckpoint(filepath=checkpoint_filepath, monitor='loss', save_best_only=True)]
@@ -75,29 +72,28 @@ def get_prediction_data():
     A_targ = []
     ener = []
     reader = EcisReader()
-    
 
     for i in range(len(files)):
         with open(files[i], 'r') as txt:
             buffer = txt.read().split('\n')
-    
-        Z_targ.append(reader.read_target(buffer)[0])
-        A_targ.append(reader.read_target(buffer)[1])
+
+        Z, A = reader.read_target(buffer)
+        Z_targ.append(Z)
+        A_targ.append(A)
         ener.append(reader.read_energy(buffer))
 
     pred_xs_raw = numpy.array([[Z_targ[i], A_targ[i], 3.0, 7.0, ener[i]] for i in range(len(files))])
-    
     
     return pred_xs_raw
     
 
 if __name__ == '__main__':
-    model = keras.models.load_model('.\\models\\v1.keras', compile=True)
+    model = keras.models.load_model('.\\models\\v1\\v1.keras', compile=True)
     
-    with open('.\\models\\xscale.pkl', 'rb') as file:
+    with open('.\\models\\v1\\xscale.pkl', 'rb') as file:
         xscale = pickle.load(file)
 
-    with open('.\\models\\yscale.pkl', 'rb') as file:
+    with open('.\\models\\v1\\yscale.pkl', 'rb') as file:
         yscale = pickle.load(file)
 
     pred_xs_raw = get_prediction_data()
@@ -106,4 +102,25 @@ if __name__ == '__main__':
     pred_ys_scaled = model.predict(pred_xs_scaled)
     pred_ys_raw = yscale.inverse_transform(pred_ys_scaled)
 
-    print(pred_ys_raw)
+    with open('.\\models\\v1\\output.txt', 'w') as file:
+        table = 'Zt'.center(6) + 'At'.center(6) + 'Elab'.center(10)
+        params = ['V real', 'r real', 'a real',
+                  'W volu', 'ir volu', 'ia volu',
+                  'W surf', 'ir surf', 'ia surf',
+                  'r coul'
+        ]
+
+        for param in params:
+            table += param.center(10)
+        table += '\n'
+
+        for i in range(len(pred_xs_raw)):
+            Z, A, En = int(pred_xs_raw[i][0]), int(pred_xs_raw[i][1]), pred_xs_raw[i][4]
+            table += str(Z).center(6) + str(A).center(6) + str(round(En, 1)).center(10)
+
+            for output in pred_ys_raw[i]:
+                table += str(round(output, 3)).center(10)
+
+            table += '\n'
+
+        file.write(table)
