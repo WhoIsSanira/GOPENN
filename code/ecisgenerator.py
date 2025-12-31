@@ -96,11 +96,12 @@ class EcisGenerator:
                 [1.300,   0.0,   0.0]  # Coulomb
             ]
         else:
-            gop = GlobalPotential.find_global_potential(beam, target, energy)
-            if gop is None:
+            goptype = GlobalPotentialFactory.create(beam, target, energy)
+            if goptype is None:
                 self.__use_globalop = False
                 self.create_sample(beam, target, energy)
             
+            gop = goptype(beam, target, energy)
             Vr, rv, av = gop.real_volume_depth(), gop.real_volume_radius(), gop.real_volume_diffuseness()
             Wv, rw, aw = gop.imag_volume_depth(), gop.imag_volume_radius(), gop.imag_volume_diffuseness()
             Wd, rd, ad = gop.imag_surface_depth(), gop.imag_surface_radius(), gop.imag_surface_diffuseness()

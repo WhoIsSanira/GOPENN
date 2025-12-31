@@ -4,6 +4,26 @@ import math
 from nuclei import Nuclei
 
 
+def register_potential(cls: type[GlobalPotential]) -> type[GlobalPotential]:
+    GlobalPotentialFactory.register(cls)
+    return cls
+
+
+class GlobalPotentialFactory:
+    _registry: list[type[GlobalPotential]] = []
+
+    @classmethod
+    def register(self, potential: type[GlobalPotential]) -> None:
+        self._registry.append(potential)
+
+    @classmethod
+    def create(self, projectile: Nuclei, target: Nuclei, energy: float) -> type[GlobalPotential]:
+        for potential in self._registry:
+            if potential.applies_to(projectile, target, energy):
+                return potential
+        return None
+
+
 class GlobalPotential:
     def __init__(self, proj: Nuclei, target: Nuclei, energy: float) -> None:
         self._proj = proj
@@ -215,26 +235,12 @@ class GlobalPotential:
 
         return table
     
-    @staticmethod
-    def find_global_potential(projectile: Nuclei, target: Nuclei, energy: float) -> GlobalPotential:
-        dist = {
-            Nuclei(1, 1) : VarnerProton(target.A, target.Z, energy),
-            Nuclei(1, 2) : ZhangDeuteron(target.A, target.Z, energy) if target.A < 20 else DaehnickDeuteron(target.A, target.Z, energy),
-            Nuclei(1, 3) : PangA3(target.A, target.Z, energy, isospin=-1),
-            Nuclei(2, 3) : PangA3(target.A, target.Z, energy, isospin=1),
-            Nuclei(2, 4) : SuAlpha(target.A, target.Z, energy),
-            Nuclei(3, 6) : XuLithium6(target.A, target.Z, energy),
-            Nuclei(3, 7) : XuLithium7(target.A, target.Z, energy),
-            Nuclei(3, 8) : SuLithium8(target.A, target.Z, energy),
-            Nuclei(4, 9) : XuBeryllium9(target.A, target.Z, energy)
-        }
-
-        try:
-            return dist[projectile]
-        except:
-            return None
+    @classmethod
+    def applies_to(self, projectile: Nuclei, target: Nuclei, energy: float) -> bool:
+        pass
 
 
+@register_potential
 class VarnerProton(GlobalPotential):
     def __init__(self, nuclons: int, charge: int, energy: float) -> None:
         super().__init__(Nuclei(1, 1), Nuclei(charge, nuclons), energy)
@@ -304,7 +310,12 @@ class VarnerProton(GlobalPotential):
     def __radius(self, ri: float, ri0: float) -> float:
         return (ri * math.pow(self._targ.A, 1/3) + ri0) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
     
+    @classmethod
+    def applies_to(self, projectile: Nuclei, target: Nuclei, energy: float) -> bool:
+        return projectile == Nuclei(1, 1)
+    
 
+@register_potential
 class ZhangDeuteron(GlobalPotential):
     def __init__(self, nuclons: int, charge: int, energy: float) -> None:
         super().__init__(Nuclei(1, 2), Nuclei(charge, nuclons), energy)
@@ -370,7 +381,12 @@ class ZhangDeuteron(GlobalPotential):
     def __radius(self, ri: float, ri0: float, rie: float) -> float:
         return (ri * math.pow(self._targ.A, 1/3) + ri0 + rie * (self.energy - self.coulomb_correction)) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
     
+    @classmethod
+    def applies_to(self, projectile: Nuclei, target: Nuclei, energy: float) -> bool:
+        return projectile == Nuclei(1, 2) and target.A <= 20
+    
 
+@register_potential
 class DaehnickDeuteron(GlobalPotential):
     def __init__(self, nuclons: int, charge: int, energy: float) -> None:
         super().__init__(Nuclei(1, 2), Nuclei(charge, nuclons), energy)
@@ -433,7 +449,12 @@ class DaehnickDeuteron(GlobalPotential):
     def __alpha(self) -> float:
         return -math.pow(self.energy / self.params['E0'], 2)
     
+    @classmethod
+    def applies_to(self, projectile: Nuclei, target: Nuclei, energy: float) -> bool:
+        return projectile == Nuclei(1, 2) and target.A < 20
+    
 
+@register_potential
 class PangA3(GlobalPotential):
     def __init__(self, nuclons: int, charge: int, energy: float, isospin: int = 1) -> None:
         super().__init__(Nuclei(2, 3), Nuclei(charge, nuclons), energy)
@@ -499,7 +520,12 @@ class PangA3(GlobalPotential):
     def __radius(self, ri: float, ri0: float) -> float:
         return (ri * math.pow(self._targ.A, 1/3) + ri0) / (math.pow(self._targ.A, 1/3) + math.pow(self._proj.A, 1/3))
     
+    @classmethod
+    def applies_to(self, projectile: Nuclei, target: Nuclei, energy: float) -> bool:
+        return projectile == Nuclei(1, 3) or projectile == Nuclei(2, 3)
+    
 
+@register_potential
 class SuAlpha(GlobalPotential):
     def __init__(self, nuclons: int, charge: int, energy: float) -> None:
         super().__init__(Nuclei(2, 4), Nuclei(charge, nuclons), energy)
@@ -564,7 +590,12 @@ class SuAlpha(GlobalPotential):
     def imag_surface_diffuseness(self) -> float:
         return self.params['as']
     
+    @classmethod
+    def applies_to(self, projectile: Nuclei, target: Nuclei, energy: float) -> bool:
+        return projectile == Nuclei(2, 4)
+    
 
+@register_potential
 class XuLithium6(GlobalPotential):
     def __init__(self, nuclons: int, charge: int, energy: float) -> None:
         super().__init__(Nuclei(3, 6), Nuclei(charge, nuclons), energy)
@@ -621,8 +652,13 @@ class XuLithium6(GlobalPotential):
 
     def imag_surface_diffuseness(self) -> float:
         return self.params['as']
+    
+    @classmethod
+    def applies_to(self, projectile: Nuclei, target: Nuclei, energy: float) -> bool:
+        return projectile == Nuclei(3, 6)
 
 
+@register_potential
 class XuLithium7(GlobalPotential):
     def __init__(self, nuclons: int, charge: int, energy: float) -> None:
         super().__init__(Nuclei(3, 7), Nuclei(charge, nuclons), energy)
@@ -681,7 +717,12 @@ class XuLithium7(GlobalPotential):
     def imag_surface_diffuseness(self) -> float:
         return self.params['as']
     
+    @classmethod
+    def applies_to(self, projectile: Nuclei, target: Nuclei, energy: float) -> bool:
+        return projectile == Nuclei(3, 7)
+    
 
+@register_potential
 class SuLithium8(GlobalPotential):
     def __init__(self, nuclons: int, charge: int, energy: float) -> None:
         super().__init__(Nuclei(3, 8), Nuclei(charge, nuclons), energy)
@@ -737,8 +778,13 @@ class SuLithium8(GlobalPotential):
 
     def imag_surface_diffuseness(self) -> float:
         return self.params['as']
+    
+    @classmethod
+    def applies_to(self, projectile: Nuclei, target: Nuclei, energy: float) -> bool:
+        return projectile == Nuclei(3, 8)
 
 
+@register_potential
 class XuBeryllium9(GlobalPotential):
     def __init__(self, nuclons: int, charge: int, energy: float) -> None:
         super().__init__(Nuclei(4, 9), Nuclei(charge, nuclons), energy)
@@ -796,8 +842,11 @@ class XuBeryllium9(GlobalPotential):
 
     def imag_surface_diffuseness(self) -> float:
         return self.params['as']
+    
+    @classmethod
+    def applies_to(self, projectile: Nuclei, target: Nuclei, energy: float) -> bool:
+        return projectile == Nuclei(4, 9)
 
 
 if __name__ == '__main__':
-    lg = XuLithium6(12, 6, 20.0)
-    print(lg())
+    pass
