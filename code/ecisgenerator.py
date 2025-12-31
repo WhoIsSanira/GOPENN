@@ -203,9 +203,9 @@ def generate_all() -> None:
 
 
 if __name__ == '__main__':
-    gen = EcisGenerator(".\\ecis\\v1\\in", use_globalop=True)
+    gen = EcisGenerator(".\\ecis\\v2\\in\\", use_globalop=True)
 
-    direct = ".\\xsections\\v1\\"
+    direct = ".\\xsections\\v2\\8Li"
     
     counter = 0
     files = os.listdir(direct)
