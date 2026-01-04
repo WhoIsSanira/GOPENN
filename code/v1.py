@@ -102,6 +102,9 @@ if __name__ == '__main__':
     pred_ys_scaled = model.predict(pred_xs_scaled)
     pred_ys_raw = yscale.inverse_transform(pred_ys_scaled)
 
+    # ZAID sorting for convienence
+    pred_xs_raw = sorted(pred_xs_raw, key=lambda x: 1000 * x[0] + x[1])
+
     with open('.\\models\\v1\\output.txt', 'w') as file:
         table = 'Zt'.center(6) + 'At'.center(6) + 'Elab'.center(10)
         params = ['V real', 'r real', 'a real',
