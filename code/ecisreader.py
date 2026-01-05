@@ -16,7 +16,7 @@ class EcisReader:
         ener = self.read_energy(buffer)
         opts = self.read_optical_parameters(buffer)
 
-        return (numpy.array([targ[0], targ[1], proj[0], proj[1], ener]), numpy.array(opts))
+        return (numpy.array([proj[0], proj[1], targ[0], targ[1], ener]), numpy.array(opts))
 
     def read_projectile(self, buffer: list[str]) -> tuple[int, int]:
         start = buffer[0].index('+')

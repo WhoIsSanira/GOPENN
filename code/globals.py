@@ -19,7 +19,7 @@ class GlobalPotentialFactory:
     @classmethod
     def create(self, projectile: Nuclei, target: Nuclei, energy: float) -> type[GlobalPotential]:
         for potential in self._registry:
-            if potential.applies_to(projectile, target, energy):
+            if potential(projectile, target, energy).applies_to(projectile, target, energy):
                 return potential
         return None
 

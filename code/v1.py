@@ -15,7 +15,7 @@ def prepare_data(dataset: list[tuple[numpy.ndarray, numpy.ndarray]]) -> tuple:
     scaler_y = StandardScaler()
 
     for i in range(len(dataset)):
-        xs.append(dataset[i][0])
+        xs.append(dataset[i][0][2:])
         ys.append(dataset[i][1])
 
     xs_scaled = scaler_x.fit_transform(xs)
@@ -32,7 +32,7 @@ def prepare_data(dataset: list[tuple[numpy.ndarray, numpy.ndarray]]) -> tuple:
 
 def build_model() -> keras.Sequential:
     model = keras.Sequential([
-        keras.layers.Input(shape=(5,)),
+        keras.layers.Input(shape=(3,)),
         keras.layers.Dense(100, activation='relu'),
         keras.layers.Dense(100, activation='relu'),
         keras.layers.Dense(100, activation='relu'),
@@ -82,12 +82,12 @@ def get_prediction_data():
         A_targ.append(A)
         ener.append(reader.read_energy(buffer))
 
-    pred_xs_raw = numpy.array([[Z_targ[i], A_targ[i], 3.0, 7.0, ener[i]] for i in range(len(files))])
+    pred_xs_raw = numpy.array([[Z_targ[i], A_targ[i], ener[i]] for i in range(len(files))])
     
     return pred_xs_raw
-    
 
-if __name__ == '__main__':
+
+def tabulate() -> None:
     model = keras.models.load_model('.\\models\\v1\\v1.keras', compile=True)
     
     with open('.\\models\\v1\\xscale.pkl', 'rb') as file:
@@ -102,7 +102,7 @@ if __name__ == '__main__':
     pred_ys_scaled = model.predict(pred_xs_scaled)
     pred_ys_raw = yscale.inverse_transform(pred_ys_scaled)
 
-    # ZAID sorting for convienence
+    # ZAID sorting for convenience
     pred_xs_raw = sorted(pred_xs_raw, key=lambda x: 1000 * x[0] + x[1])
 
     with open('.\\models\\v1\\output.txt', 'w') as file:
@@ -118,7 +118,7 @@ if __name__ == '__main__':
         table += '\n'
 
         for i in range(len(pred_xs_raw)):
-            Z, A, En = int(pred_xs_raw[i][0]), int(pred_xs_raw[i][1]), pred_xs_raw[i][4]
+            Z, A, En = int(pred_xs_raw[i][0]), int(pred_xs_raw[i][1]), pred_xs_raw[i][2]
             table += str(Z).center(6) + str(A).center(6) + str(round(En, 1)).center(10)
 
             for output in pred_ys_raw[i]:
@@ -127,3 +127,7 @@ if __name__ == '__main__':
             table += '\n'
 
         file.write(table)
+
+
+if __name__ == '__main__':
+    tabulate()
