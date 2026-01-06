@@ -1,5 +1,6 @@
 import os
 import numpy
+from ecisreader import EcisReader
 
 
 class Dataset:
@@ -17,12 +18,32 @@ class Dataset:
     
 
 def gather(path: str) -> list[Dataset]:
-    files = os.listdir(path)
-    for i in range(len(files)):
-        if os.path.isdir(files[i]):
-            subfiles = os.listdir(files[i])
+    ecr = EcisReader()
+    datasets = []
+    ecises = []
 
+    dirs = []
 
+    stack = os.listdir(path)
+    while len(stack) != 0:
+        current = stack.pop()
+
+        full_current = path + '/' + '/'.join(dirs) + current
+
+        if os.path.isfile(full_current):
+            ecises.append(full_current)
+
+        if os.path.isdir(full_current):
+            dirs.append(current)
+            stack.extend(os.listdir(path + '/' + '/'.join(dirs)))
+
+    for j in range(len(ecises)):
+        # inputs, outputs = ecr.read(ecises[j])
+        # datasets.append(Dataset(inputs, outputs))
+        print(ecises)
+
+    return datasets
+        
 
 if __name__ == "__main__":
-    pass
+    gather('ecis/v2/in')
