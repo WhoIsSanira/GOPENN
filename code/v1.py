@@ -5,18 +5,19 @@ import keras
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 
-from ecisreader import *
+from dataset import Dataset
+from ecisreader import EcisReader
 
 
-def prepare_data(dataset: list[tuple[numpy.ndarray, numpy.ndarray]]) -> tuple:
+def prepare_data(datasets: list[Dataset]) -> tuple:
     xs = []
     ys = []
     scaler_x = StandardScaler()
     scaler_y = StandardScaler()
 
-    for i in range(len(dataset)):
-        xs.append(dataset[i][0][2:])
-        ys.append(dataset[i][1])
+    for i in range(len(datasets)):
+        xs.append(datasets[i].xs[2:])
+        ys.append(datasets[i].ys)
 
     xs_scaled = scaler_x.fit_transform(xs)
     ys_scaled = scaler_y.fit_transform(ys)
@@ -46,8 +47,8 @@ def build_model() -> keras.Sequential:
 
 
 def train_model() -> None:
-    dataset = v1_dataset()
-    reaction_params_train, reaction_params_test, gops_train, gops_test = prepare_data(dataset)
+    datasets = Dataset.gather('.\\ecis\\v1\\in')
+    reaction_params_train, reaction_params_test, gops_train, gops_test = prepare_data(datasets)
 
     model = build_model()
     EPOCHS = 100

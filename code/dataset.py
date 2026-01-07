@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import numpy
 from ecisreader import EcisReader
@@ -16,34 +18,33 @@ class Dataset:
     def ys(self) -> numpy.ndarray:
         return self.__ys.copy()
     
+    @staticmethod
+    def gather(path: str) -> list[Dataset]:
+        ecr = EcisReader()
+        datasets = []
+        ecises = []
 
-def gather(path: str) -> list[Dataset]:
-    ecr = EcisReader()
-    datasets = []
-    ecises = []
+        stack = os.listdir(path)
+        stack = [path + '\\' + stack[i] for i in range(len(stack))]
 
-    dirs = []
+        while len(stack) != 0:
+            current = stack.pop()
 
-    stack = os.listdir(path)
-    while len(stack) != 0:
-        current = stack.pop()
+            if os.path.isfile(current):
+                ecises.append(current)
 
-        full_current = path + '/' + '/'.join(dirs) + current
+            if os.path.isdir(current):
+                inside = os.listdir(current)
+                inside = [current + '\\' + inside[i] for i in range(len(inside))]
+                stack.extend(inside)
 
-        if os.path.isfile(full_current):
-            ecises.append(full_current)
+        for j in range(len(ecises)):
+            inputs, outputs = ecr.read(ecises[j])
+            datasets.append(Dataset(inputs, outputs))
+            print(ecises[j])
 
-        if os.path.isdir(full_current):
-            dirs.append(current)
-            stack.extend(os.listdir(path + '/' + '/'.join(dirs)))
+        return datasets
 
-    for j in range(len(ecises)):
-        # inputs, outputs = ecr.read(ecises[j])
-        # datasets.append(Dataset(inputs, outputs))
-        print(ecises)
-
-    return datasets
-        
 
 if __name__ == "__main__":
-    gather('ecis/v2/in')
+    Dataset.gather('ecis\\v1\\in')

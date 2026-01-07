@@ -47,20 +47,6 @@ class EcisReader:
             if a > 0.0: params.append(a)
 
         return params
-    
-
-def v1_dataset() -> list[tuple[numpy.ndarray, numpy.ndarray]]:
-    directory = '.\\ecis\\v1\\in\\'
-    files = os.listdir(directory)
-    files = [directory + files[i] for i in range(len(files))]
-
-    datasets = []
-
-    ecr = EcisReader()
-    for i in range(len(files)):
-        datasets.append(ecr.read(files[i]))
-
-    return datasets
 
 
 if __name__ == '__main__':
